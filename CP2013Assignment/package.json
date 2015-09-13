@@ -1,0 +1,22 @@
+{
+  "name": "CP2013Assignment",
+  "version": "0.0.1",
+  "main": "app.js",
+
+  "dependencies" : {
+    "body-parser" : "*",
+    "cookie-parser" : "*",
+    "ejs" : "*",
+    "express" : "*",
+    "express-session" : "*",
+    "mongodb" : "*",
+    "mysql" : "*",
+    "nedb" : "*",
+    "passport" : "*",
+    "passport-http" : "*",
+    "passport-local" : "*",
+    "serve-favicon" : "*"
+  }
+
+
+}

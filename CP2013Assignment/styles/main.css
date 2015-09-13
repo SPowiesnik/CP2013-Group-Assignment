@@ -1,0 +1,182 @@
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: 940px;
+    background: linear-gradient(#eeeeee 0%, gray 100%);
+    box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+nav ul {
+    list-style: none;
+    position: relative;
+    float: left;
+    margin-left: 15%;
+    display: inline-table;
+}
+
+nav ul li {
+    float: left;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+nav ul li:hover {
+    background: rgba(0, 0, 0, .15);
+}
+
+nav ul li:hover > ul {
+    display: block;
+}
+
+nav ul li {
+    float: left;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+nav ul li a {
+    display: block;
+    padding: 30px 20px;
+    color: white;
+    font-size: .9em;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+nav ul ul {
+    margin-left: 0;
+    display: none;
+    background: gray;
+    position: absolute;
+    top: 100%;
+    box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
+nav ul ul li {
+    float: none;
+    position: relative;
+}
+
+nav ul ul li a {
+    padding: 15px 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+nav ul ul ul {
+    position: absolute;
+    left: 100%;
+    top: 0;
+}
+
+#content {
+    position: relative;
+    z-index: -1;
+    margin-top: 100px;
+    margin-left: 15%;
+
+}
+
+.floatRight {
+    position: relative;
+    float: right;
+    margin-right: 15%;
+}
+
+.logIn {
+    clear: both;
+    margin-top: 20px;
+    border: solid gray;
+    height: 50px;
+    width: 357px;
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+
+    -webkit-transition: -webkit-box-shadow .1s ease-in-out;
+
+    -webkit-box-shadow: 0px 3px 0px #eeeeee, 0px 3px 6px gray;
+    -moz-box-shadow: 0px 3px 0px #eeeeee, 0px 3px 6px gray;
+    box-shadow: 0px 3px 0px #eeeeee, 0px 3px 6px gray;
+
+    background: -moz-linear-gradient(#eeeeee 0%, gray 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, gray));
+    background: -webkit-linear-gradient(#eeeeee 0%, gray);
+    background: linear-gradient(#eeeeee 0%, gray 100%);
+}
+
+.logIn input {
+    clear: both;
+    margin: auto;
+    border-color: transparent;
+    background-color: transparent;
+    height: 50px;
+    width: 100%;
+
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.logIn:hover {
+    color: lightgrey;
+}
+
+.logIn:active {
+    -webkit-box-shadow: 0 0 0 #eeeeee, 0 0 0 black;
+    -moz-box-shadow: 0 0 0 #eeeeee, 0 0 0 black;
+    box-shadow: 0 0 0 #eeeeee, 0 0 0 black;
+    -webkit-transform: translate(0, 5px);
+}
+
+.formInput {
+    width: 100%;
+}
+
+.formInput label {
+    width: 360px;
+    text-align: left;
+    font-size: 15px;
+    color: white;
+}
+
+.formInput input {
+    margin: 5px 0 15px 0;
+    width: 357px;
+    padding: 5px;
+}
+
+.textBox {
+    margin: 10% auto;
+    width: 400px;
+    border: 3px solid gray;
+    padding: 20px;
+    height: 250px;
+
+    background: #eeeeee;
+    background: -moz-linear-gradient(#eeeeee 0%, gray 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, gray));
+    background: -webkit-linear-gradient(#eeeeee 0%, gray 100%);
+    background: linear-gradient(#eeeeee 0%, gray 100%);
+}
+
+.housePlan {
+    margin: auto;
+}
