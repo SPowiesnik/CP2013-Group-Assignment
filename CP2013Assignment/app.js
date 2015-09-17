@@ -18,8 +18,11 @@ var favicon = require('serve-favicon');
 
 var Datastore = require('nedb');
 
+var lightModule = require('./static/functions');
+
 var db = {
-    userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true})
+    userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true}),
+    //lights: new Datastore({filename: path.join(__dirname, 'data/lights.db'), autoload: true})
 };
 
 var app = express();
@@ -31,6 +34,7 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'images', 'favicon.ico')));
 
 //configuration of middleware
+app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(expressSession({
@@ -41,6 +45,7 @@ app.use(expressSession({
 
 app.use(express.static(path.join(__dirname, 'styles')));
 app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 //configuration of passport
 app.use(passport.initialize());
@@ -84,17 +89,61 @@ function verifyAuthenticated(req, res, next) {
     }
 }
 
+function getLightState(light, callback) {
+    db.lights.findOne({light: light}, function (error, state) {
+        if (error || !state) {
+            return callback(new Error('light state not found'));
+        }
+        console.log(state.state);
+        console.log(light);
+        callback(null, state);
+    });
+
+}
+
 app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
         res.redirect('login');
     } else {
-        res.render('index', {
-            isAuthenticated: req.isAuthenticated(),
-            user: req.user,
-            temperature: 30
+        //var state;
+        //db.lights.findOne({'light': "light1"}, function (error, light) {
+        //console.log(light.state);
+        //return state = light.state;
+        //});
+        lightModule.get("light1", function (error, object) {
+            if (error) {
+                console.log("app.get /getLightState error");
+            }
+            console.log(object.state);
+            console.log("getLightStateExecuted");
+            //res.send(state);
+            console.log(object.state);
+            var light1 = object.state;
+
+
+            res.render('index', {
+                isAuthenticated: req.isAuthenticated(),
+                user: req.user,
+                temperature: 30,
+                light1: object.state
+            });
         });
     }
 
+});
+
+app.post('/getLightState', function (req, res) {
+    lightModule.get(req.body.light, function (error, object) {
+        if (error) {
+            console.log("app.get /getLightState error");
+        }
+        lightModule.update(req.body.light, object.state, function (error, object) {
+            if (error) {
+                console.log("app.get /getLightState error");
+            }
+        });
+    });
+    res.redirect(req.header('Referer'));
 });
 
 //provides login page

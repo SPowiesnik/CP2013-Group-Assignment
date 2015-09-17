@@ -1,38 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Home</title>
+    <script data-main="/functions" src="/functions.js"></script>
     <link rel="stylesheet" type="text/css" href="/main.css"/>
 </head>
-
+<% include navbar.ejs %>
 <body>
 
-<% include navbar.ejs %>
 
 <div id="content">
     <p>Hello, <%= user.username %></p>
     <br>
+
     <p>Temperature: <%= temperature %></p>
 
     <div class="housePlan">
         <img src="/HousePlan.png">
-
-        <%
-            
-            var state = off;
-        if (state === off){%>
-            <img src="/Light-Off.png">
-
-        <%} else{ %>
-            <img src="/Light-Off.png">
-        <%}%>
-
 
 
     </div>
 
 
 </div>
+
+<form method="post" action="/getLightState">
+    <input id="light" name="light" value="light1" type="image">
+
+
+</form>
+
+<script type="text/javascript">
+    document.getElementById('light').src = "light<%= light1 %>.png";
+</script>
+
+
 </body>
 </html>

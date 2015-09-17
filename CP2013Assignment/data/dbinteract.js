@@ -9,6 +9,7 @@ var Datastore = require('nedb');
 
 var db = {
     userinfo: new Datastore({ filename: path.join(__dirname, 'userinfo.db'), autoload: true}),
+    lights: new Datastore({ filename: path.join(__dirname, 'lights.db'), autoload: true}),
 };
 
 // used to insert data into database
@@ -18,9 +19,21 @@ function insertUser(username, password) {
     });
 }
 
+function insertLight(light, state) {
+    db.lights.insert({ light: light, state: state}, function(error, insertDocument){
+        console.log('inserted light');
+    });
+}
 
-
-
-
+function sss(light, callback) {
+    db.lights.findOne({light: light}, function (error, state) {
+        if (error || !state) {
+            return callback(new Error('light state not found'));
+        }
+        console.log(state.state);
+        console.log(light);
+        callback(null, state);
+    });
+}
 
 
