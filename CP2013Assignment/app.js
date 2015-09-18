@@ -105,27 +105,22 @@ app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
         res.redirect('login');
     } else {
-        //var state;
-        //db.lights.findOne({'light': "light1"}, function (error, light) {
-        //console.log(light.state);
-        //return state = light.state;
-        //});
-        lightModule.get("light1", function (error, object) {
+        lightModule.get( function (error, object) {
             if (error) {
                 console.log("app.get /getLightState error");
             }
-            console.log(object.state);
             console.log("getLightStateExecuted");
-            //res.send(state);
-            console.log(object.state);
-            var light1 = object.state;
-
 
             res.render('index', {
                 isAuthenticated: req.isAuthenticated(),
                 user: req.user,
                 temperature: 30,
-                light1: object.state
+                light1: object[0].state,
+                light2: object[1].state,
+                light3: object[2].state,
+                light4: object[3].state,
+                light5: object[4].state,
+                light6: object[5].state
             });
         });
     }
@@ -133,7 +128,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/getLightState', function (req, res) {
-    lightModule.get(req.body.light, function (error, object) {
+    lightModule.getOne(req.body.light, function (error, object) {
         if (error) {
             console.log("app.get /getLightState error");
         }

@@ -14,25 +14,34 @@
     <p>Hello, <%= user.username %></p>
     <br>
 
+    <div class="light-set">
+        <img class="housePlan" src="/HousePlan.jpg">
+
+        <form method="post" action="/getLightState">
+            <input class="light light-1" id="light1" name="light" value="light1" type="image">
+            <input class="light light-2" id="light2" name="light" value="light2" type="image">
+            <input class="light light-3" id="light3" name="light" value="light3" type="image">
+            <input class="light light-4" id="light4" name="light" value="light4" type="image">
+            <input class="light light-5" id="light5" name="light" value="light5" type="image">
+            <input class="light light-6" id="light6" name="light" value="light6" type="image">
+        </form>
+    </div>
     <p>Temperature: <%= temperature %></p>
 
-    <div class="housePlan">
-        <img src="/HousePlan.png">
-
-
-    </div>
+    <form method="post" action="/getLightState">
+        <input class="housePlan-Light1" id="light" name="light" value="light1" type="image">
 
 
 </div>
 
-<form method="post" action="/getLightState">
-    <input id="light" name="light" value="light1" type="image">
-
-
-</form>
 
 <script type="text/javascript">
-    document.getElementById('light').src = "light<%= light1 %>.png";
+    document.getElementById('light1').src = "light<%= light1 %>.png";
+    document.getElementById('light2').src = "light<%= light2 %>.png";
+    document.getElementById('light3').src = "light<%= light3 %>.png";
+    document.getElementById('light4').src = "light<%= light4 %>.png";
+    document.getElementById('light5').src = "light<%= light5 %>.png";
+    document.getElementById('light6').src = "light<%= light6 %>.png";
 </script>
 
 

@@ -12,7 +12,7 @@ nav {
     top: 0;
     left: 0;
     width: 100%;
-    min-width: 940px;
+    min-width: 700px;
     background: linear-gradient(#eeeeee 0%, gray 100%);
     box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .1);
     border: 1px solid rgba(0, 0, 0, .1);
@@ -22,7 +22,7 @@ nav ul {
     list-style: none;
     position: relative;
     float: left;
-    margin-left: 15%;
+    margin-left: 2%;
     display: inline-table;
 }
 
@@ -85,11 +85,53 @@ nav ul ul ul {
 }
 
 #content {
-    position: relative;
-    z-index: -1;
     margin-top: 100px;
     margin-left: 15%;
 
+}
+
+.housePlan {
+    height: 800px;
+}
+
+.light-set {
+    position: absolute;
+    z-index: auto;
+}
+.light {
+    height: 60px;
+    position: absolute;
+    width: 60px;
+}
+.light-1 {
+    top: 18%;
+    left: 20%;
+    z-index: 1;
+}
+.light-2 {
+    top: 16%;
+    right: 17%;
+    z-index: 1;
+}
+.light-3 {
+    bottom: 8%;
+    right: 17%;
+    z-index: 1;
+}
+.light-4 {
+    bottom: 20%;
+    left: 20%;
+    z-index: 1;
+}
+.light-5 {
+    bottom: 27%;
+    right: 17%;
+    z-index: 1;
+}
+.light-6 {
+    top: 44%;
+    right: 17%;
+    z-index: 1;
 }
 
 .floatRight {
@@ -97,6 +139,12 @@ nav ul ul ul {
     float: right;
     margin-right: 15%;
 }
+
+
+
+
+
+
 
 .logIn {
     clear: both;
@@ -177,6 +225,32 @@ nav ul ul ul {
     background: linear-gradient(#eeeeee 0%, gray 100%);
 }
 
-.housePlan {
-    margin: auto;
+
+
+
+/*Formobile*/
+@media (orientation: portrait) {
+    .textBox {
+        width: 90%;
+        //height: 100%;
+        //font-size: 10px;
+    }
+    .logIn{
+        height: 20%;
+        width: 100%;
+    }
+
+    nav{
+        font-size: 30px;
+    }
+
+    #content{
+        margin-top: 120px;
+        margin-left: 1%;
+    }
+
+    .diagram {
+        width: 100%;
+        z-index: 0;
+    }
 }
