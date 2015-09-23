@@ -167,8 +167,27 @@ app.get('/lights', verifyAuthenticated, function (req, res) {
     res.render('lights');
 });
 
-app.get('/profiles', verifyAuthenticated, function (req, res) {
-    res.render('profiles');
+app.get('/editProfile', verifyAuthenticated, function (req, res) {
+    res.render('editProfile');
+});
+
+app.post('/updatePrivileges', verifyAuthenticated, function(req, res){
+   //add logic here
+
+
+
+});
+
+app.get('/newProfile', verifyAuthenticated, function (req, res) {
+    res.render('newProfile');
+});
+
+
+app.post('/createProfile', verifyAuthenticated, function(req, res){
+    //add logic here
+
+
+
 });
 
 var port = process.env.PORT || 3000;

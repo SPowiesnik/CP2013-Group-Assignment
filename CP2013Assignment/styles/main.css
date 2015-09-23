@@ -8,9 +8,12 @@
 }
 
 nav {
+    z-index: 10;
     position: fixed;
     top: 0;
     left: 0;
+    padding-left: 13%;
+    padding-right: 13%;
     width: 100%;
     min-width: 700px;
     background: linear-gradient(#eeeeee 0%, gray 100%);
@@ -85,9 +88,8 @@ nav ul ul ul {
 }
 
 #content {
-    margin-top: 100px;
-    margin-left: 15%;
-
+    margin: 100px 13% auto 13%;
+    position: relative;
 }
 
 .housePlan {
@@ -137,11 +139,40 @@ nav ul ul ul {
 .floatRight {
     position: relative;
     float: right;
-    margin-right: 15%;
 }
 
 
+.privileges{
+    position: relative;
+}
 
+.privileges input{
+    right: 20px;
+    position:absolute;
+}
+
+.privileges label {
+    left: 40px;
+    position: relative;
+}
+
+.submitButton {
+    width:100px;
+    position:absolute;
+    bottom: -40px;
+    background: linear-gradient(#eeeeee 0%, gray 100%);;
+    color:white;
+    font-family: Tahoma, Geneva, sans-serif;
+    height:30px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border: 1px solid #999;
+}
+
+.submitButton:hover {
+    background: gray;
+}
 
 
 
