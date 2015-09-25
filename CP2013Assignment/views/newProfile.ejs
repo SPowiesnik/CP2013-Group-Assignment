@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Doors</title>
+    <link rel="stylesheet" type="text/css" href="/main.css"/>
+</head>
+
+<body>
+
+<% include navbar.ejs %>
+
+<div id="content">
+    <form class="privileges" method="post" action="/createProfile">
+        <h2>User Info</h2>
+
+        <label for="firstName">First Name: </label>
+        <input id="firstName" type="text">
+
+        <br>
+
+        <label for="lastName">Last Name: </label>
+        <input id="lastName" type="text">
+
+        <br>
+
+        <label for="username">Username: </label>
+        <input id="username" type="text">
+
+        <br>
+
+        <label for="password">Password: </label>
+        <input id="password" type="password">
+
+        <br>
+
+        <label for="confirmPassword">Confirm Password: </label>
+        <input id="confirmPassword" type="password">
+
+        <br>
+        <br>
+
+        <h2>User Privileges</h2>
+        <h3>Lights</h3>
+        <label for="bedroomLight">Bedroom</label>
+        <input id="bedroomLight" type="checkbox">
+
+        <br>
+
+        <label for="kitchenLight">Kitchen</label>
+        <input id="kitchenLight" type="checkbox">
+
+        <br>
+
+        <label for="livingLight">Living Room</label>
+        <input id="livingLight" type="checkbox">
+
+        <br>
+
+        <label for="bathroomLight">Bathroom</label>
+        <input id="bathroomLight" type="checkbox">
+
+        <br>
+
+        <label for="laundryLight">Laundry</label>
+        <input id="laundryLight" type="checkbox">
+
+
+        <br>
+        <br>
+
+        <h3>Doors</h3>
+        <label for="frontDoor">Front Door</label>
+        <input id="frontDoor" type="checkbox">
+
+        <br>
+
+        <label for="backDoor">Back Door</label>
+        <input id="backDoor" type="checkbox">
+
+        <br>
+        <br>
+
+        <h3>Miscellaneous</h3>
+        <label for="temperature">Temperature</label>
+        <input id="temperature" type="checkbox">
+
+        <br>
+
+        <label for="humidity">Humidity</label>
+        <input id="humidity" type="checkbox">
+
+        <br>
+        <br>
+
+        <h3>Security</h3>
+        <label for="emailNotifications">Email Notifications</label>
+        <input id="emailNotifications" type="checkbox">
+
+        <br>
+        <br>
+
+        <h3>Admin Privileges</h3>
+        <label for="adminPrivileges">All Admin Privileges</label>
+        <input id="adminPrivileges" type="checkbox">
+        <br>
+        <input class="submitButton" value="Create Profile" type="submit">
+
+
+    </form>
+
+
+</div>
+
+</body>
+</html>

@@ -27,8 +27,6 @@ var lightModule = {
             if (error || !lightObject){
                 return callback(new Error('light state not found'));
             }
-
-
             callback(null, lightObject);
         });
     },
@@ -44,6 +42,7 @@ var lightModule = {
         });
     },
     update: function (light, currentState){
+        //push a off/on based on img
         var state;
         if (currentState==="on"){
             state = "off";
@@ -62,18 +61,6 @@ var lightModule = {
     }
 
 };
-
-function sss(light, callback) {
-    db.lights.findOne({light: light}, function (error, state) {
-        if (error || !state) {
-            return callback(new Error('light state not found'));
-        }
-        console.log(state.state);
-        console.log(light);
-        callback(null, state);
-    });
-}
-
 
 
 module.exports = lightModule;
