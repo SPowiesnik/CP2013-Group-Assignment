@@ -8,9 +8,8 @@
 }
 
 nav {
-
     z-index: 10;
-
+    max-height: 10%;
     position: fixed;
     top: 0;
     left: 0;
@@ -91,7 +90,7 @@ nav ul ul ul {
 
 #content {
     margin: 100px 13% auto 13%;
-    position: relative;
+    //position: relative;
 }
 
 .housePlan {
@@ -159,25 +158,22 @@ nav ul ul ul {
 }
 
 .submitButton {
-    width:100px;
+    padding: 5px;
     position:absolute;
     bottom: -40px;
     background: linear-gradient(#eeeeee 0%, gray 100%);;
     color:white;
     font-family: Tahoma, Geneva, sans-serif;
-    height:30px;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
     border: 1px solid #999;
+    font-size: 20px;
 }
 
 .submitButton:hover {
     background: gray;
 }
-
-
-
 
 .logIn {
     clear: both;
@@ -258,28 +254,41 @@ nav ul ul ul {
     background: linear-gradient(#eeeeee 0%, gray 100%);
 }
 
-
+input[type="checkbox"]{
+    width: 18px;
+    height: 18px;
+}
+select{
+    font-size: 20px;
+}
 
 
 /*Formobile*/
 @media (orientation: portrait) {
     .textBox {
         width: 90%;
-        //height: 100%;
-        //font-size: 10px;
+        height: 100%;
+        font-size: 10px;
     }
     .logIn{
         height: 20%;
         width: 100%;
     }
 
-    nav{
-        font-size: 30px;
+    nav {
+        padding-left: 3%;
+        padding-right: 3%;
+        position: absolute;
     }
 
+    body{
+        font-size: 200%;
+
+    }
     #content{
         margin-top: 120px;
-        margin-left: 1%;
+        margin-left: 2%;
+        margin-right: 2%;
     }
 
     .housePlan {
@@ -290,5 +299,20 @@ nav ul ul ul {
     .light-set{
         width: 100%;
         height: 80%;
+    }
+
+    input[type="checkbox"]{
+        width: 40px;
+        height: 40px;
+    }
+    select{
+        font-size: 40px;
+    }
+
+
+
+    .submitButton {
+
+        font-size: 25px;
     }
 }
