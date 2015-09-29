@@ -4,7 +4,6 @@
 'use strict';
 
 var Datastore = require('nedb');
-var path = require('path');
 
 var db = {
     lights: new Datastore({filename: ('./data/lights.db'), autoload: true})
@@ -74,6 +73,7 @@ function toggleImg(state) {
     }
     console.log(state);
     console.log("1");
+
 
     /*
      var state = "off";

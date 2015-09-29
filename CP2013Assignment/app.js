@@ -101,11 +101,36 @@ function getLightState(light, callback) {
 
 }
 
+function insertUser(firstname, lastname, email, username, password, bedroomLight, officeLight, kitchenLight, livingroomLight,
+                    bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
+    db.userinfo.insert({
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        username: username,
+        password: password,
+        bedroomLight: bedroomLight,
+        officeLight: officeLight,
+        kitchenLight: kitchenLight,
+        livingroomLight: livingroomLight,
+        bathroomLight: bathroomLight,
+        laundryLight: laundryLight,
+        frontDoor: frontDoor,
+        backDoor: backDoor,
+        temperature: temperature,
+        humidity: humidity,
+        emailNotifications: emailNotifications,
+        adminPrivileges: adminPrivileges
+    }, function (error, insertDocument) {
+        console.log('inserted user');
+    });
+}
+
 app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
         res.redirect('login');
     } else {
-        lightModule.get( function (error, object) {
+        lightModule.get(function (error, object) {
             if (error) {
                 console.log("app.get /getLightState error");
             }
@@ -120,7 +145,7 @@ app.get('/', function (req, res) {
                 light3: object[2].state,
                 light4: object[3].state,
                 light5: object[4].state,
-                light6: object[5].state
+                light6: object[5].state,
             });
         });
     }
@@ -171,9 +196,8 @@ app.get('/editProfile', verifyAuthenticated, function (req, res) {
     res.render('editProfile');
 });
 
-app.post('/updatePrivileges', verifyAuthenticated, function(req, res){
-   //add logic here
-
+app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
+    //add logic here
 
 
 });
@@ -183,11 +207,98 @@ app.get('/newProfile', verifyAuthenticated, function (req, res) {
 });
 
 
-app.post('/createProfile', verifyAuthenticated, function(req, res){
-    //add logic here
-
-
-
+app.post('/createProfile', verifyAuthenticated, function (req, res) {
+    if (req.body.bedroomLight === "on") {
+        var bedroomLight = true;
+    } else {
+        bedroomLight = false;
+    }
+    if (req.body.officeLight === "on") {
+        var officeLight = true;
+    } else {
+        officeLight = false;
+    }
+    if (req.body.kitchenLight === "on") {
+        var kitchenLight = true;
+    } else {
+        kitchenLight = false;
+    }
+    if (req.body.livingLight === "on") {
+        var livingLight = true;
+    } else {
+        livingLight = false;
+    }
+    if (req.body.bathroomLight === "on") {
+        var bathroomLight = true;
+    } else {
+        bathroomLight = false;
+    }
+    if (req.body.lastname === "on") {
+        var laundryLight = true;
+    } else {
+        laundryLight = false;
+    }
+    if (req.body.frontDoor === "on") {
+        var frontDoor = true;
+    } else {
+        frontDoor = false;
+    }
+    if (req.body.backDoor === "on") {
+        var backDoor = true;
+    } else {
+        backDoor = false;
+    }
+    if (req.body.temperature === "on") {
+        var temperature = true;
+    } else {
+        temperature = false;
+    }
+    if (req.body.humidity === "on") {
+        var humidity = true;
+    } else {
+        humidity = false;
+    }
+    if (req.body.emailNotifications === "on") {
+        var emailNotifications = true;
+    } else {
+        emailNotifications = false;
+    }
+    if (req.body.adminPrivileges === "on") {
+        var adminPrivileges = true;
+    } else {
+        adminPrivileges = false;
+    }
+    db.userinfo.findOne({username: req.body.username}, function (error, user) {
+        if (!user) {
+            if (req.body.password !== req.body.confirmPassword || !req.body.firstName.trim() || !req.body.lastName.trim()
+                || !req.body.username.trim() || !req.body.password.trim()) {
+                res.send("please fill in all required fields");
+            } else {
+                insertUser(
+                    req.body.firstName,
+                    req.body.lastName,
+                    req.body.email,
+                    req.body.username,
+                    req.body.password,
+                    bedroomLight,
+                    officeLight,
+                    kitchenLight,
+                    livingLight,
+                    bathroomLight,
+                    laundryLight,
+                    frontDoor,
+                    backDoor,
+                    temperature,
+                    humidity,
+                    emailNotifications,
+                    adminPrivileges
+                );
+                res.redirect("/");
+            }
+        } else {
+            res.send("username is already taken");
+        }
+    });
 });
 
 var port = process.env.PORT || 3000;

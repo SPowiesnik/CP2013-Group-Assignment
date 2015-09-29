@@ -1,4 +1,3 @@
-
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
@@ -8,16 +7,18 @@
                 <li><a href="/lights">Lights</a></li>
             </ul>
         </li>
+        <% if(user.adminPrivileges){ %>
         <li><a href="#">Profiles/Admin</a>
             <ul>
-                <li><a href="/editProfile">Edit Existing Profiles</a> </li>
-                <li><a href="/newProfile">Create New Profile</a> </li>
+                <li><a href="/editProfile">Edit Existing Profiles</a></li>
+                <li><a href="/newProfile">Create New Profile</a></li>
             </ul>
         </li>
+        <% } %>
 
     </ul>
     <ul class="floatRight">
-        <li><a href="/login">Log out</a></li>
+        <li><a href="/logout">Log out</a></li>
     </ul>
 </nav>
 

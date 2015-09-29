@@ -15,27 +15,27 @@
         <h2>User Info</h2>
 
         <label for="firstName">First Name: </label>
-        <input id="firstName" type="text">
+        <input id="firstName" name="firstName" type="text"  required>
 
         <br>
 
         <label for="lastName">Last Name: </label>
-        <input id="lastName" type="text">
+        <input id="lastName" name="lastName" type="text"  required>
 
         <br>
 
         <label for="username">Username: </label>
-        <input id="username" type="text">
+        <input id="username" name="username" type="text"  required>
 
         <br>
 
         <label for="password">Password: </label>
-        <input id="password" type="password">
+        <input id="password" name="password" type="password"  required>
 
         <br>
 
         <label for="confirmPassword">Confirm Password: </label>
-        <input id="confirmPassword" type="password">
+        <input id="confirmPassword" name="confirmPassword" type="password"  required>
 
         <br>
         <br>
@@ -43,27 +43,32 @@
         <h2>User Privileges</h2>
         <h3>Lights</h3>
         <label for="bedroomLight">Bedroom</label>
-        <input id="bedroomLight" type="checkbox">
+        <input id="bedroomLight" name="bedroomLight" type="checkbox">
+
+        <br>
+
+        <label for="officeLight">Office</label>
+        <input id="officeLight" name="officeLight" type="checkbox">
 
         <br>
 
         <label for="kitchenLight">Kitchen</label>
-        <input id="kitchenLight" type="checkbox">
+        <input id="kitchenLight" name="kitchenLight" type="checkbox">
 
         <br>
 
         <label for="livingLight">Living Room</label>
-        <input id="livingLight" type="checkbox">
+        <input id="livingLight" name="livingLight" type="checkbox">
 
         <br>
 
         <label for="bathroomLight">Bathroom</label>
-        <input id="bathroomLight" type="checkbox">
+        <input id="bathroomLight" name="bathroomLight" type="checkbox">
 
         <br>
 
         <label for="laundryLight">Laundry</label>
-        <input id="laundryLight" type="checkbox">
+        <input id="laundryLight" name="laundryLight" type="checkbox">
 
 
         <br>
@@ -71,38 +76,38 @@
 
         <h3>Doors</h3>
         <label for="frontDoor">Front Door</label>
-        <input id="frontDoor" type="checkbox">
+        <input id="frontDoor" name="frontDoor" type="checkbox">
 
         <br>
 
         <label for="backDoor">Back Door</label>
-        <input id="backDoor" type="checkbox">
+        <input id="backDoor" name="backDoor" type="checkbox">
 
         <br>
         <br>
 
         <h3>Miscellaneous</h3>
         <label for="temperature">Temperature</label>
-        <input id="temperature" type="checkbox">
+        <input id="temperature" name="temperature" type="checkbox">
 
         <br>
 
         <label for="humidity">Humidity</label>
-        <input id="humidity" type="checkbox">
+        <input id="humidity" name="humidity" type="checkbox">
 
         <br>
         <br>
 
         <h3>Security</h3>
         <label for="emailNotifications">Email Notifications</label>
-        <input id="emailNotifications" type="checkbox">
+        <input id="emailNotifications" name="emailNotifications" type="checkbox">
 
         <br>
         <br>
 
         <h3>Admin Privileges</h3>
         <label for="adminPrivileges">All Admin Privileges</label>
-        <input id="adminPrivileges" type="checkbox">
+        <input id="adminPrivileges" name="adminPrivileges" type="checkbox">
         <br>
         <input class="submitButton" value="Create Profile" type="submit">
 

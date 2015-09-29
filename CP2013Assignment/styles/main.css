@@ -118,23 +118,23 @@ nav ul ul ul {
     z-index: 1;
 }
 .light-3 {
-    bottom: 8%;
+    top: 44%;
     right: 17%;
     z-index: 1;
 }
 .light-4 {
-    bottom: 20%;
-    left: 20%;
-    z-index: 1;
-}
-.light-5 {
     bottom: 27%;
     right: 17%;
     z-index: 1;
 }
-.light-6 {
-    top: 44%;
+.light-5 {
+    bottom: 8%;
     right: 17%;
+    z-index: 1;
+}
+.light-6 {
+    bottom: 20%;
+    left: 20%;
     z-index: 1;
 }
 
