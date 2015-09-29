@@ -98,7 +98,6 @@ function getLightState(light, callback) {
         console.log(light);
         callback(null, state);
     });
-
 }
 
 function insertUser(firstname, lastname, email, username, password, bedroomLight, officeLight, kitchenLight, livingroomLight,
@@ -137,7 +136,6 @@ app.get('/', function (req, res) {
             console.log("getLightStateExecuted");
 
             res.render('index', {
-                isAuthenticated: req.isAuthenticated(),
                 user: req.user,
                 temperature: 30,
                 light1: object[0].state,
@@ -185,15 +183,21 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/doors', verifyAuthenticated, function (req, res) {
-    res.render('doors');
+    res.render('doors', {
+        user: req.user
+    });
 });
 
 app.get('/lights', verifyAuthenticated, function (req, res) {
-    res.render('lights');
+    res.render('lights', {
+        user: req.user
+    });
 });
 
 app.get('/editProfile', verifyAuthenticated, function (req, res) {
-    res.render('editProfile');
+    res.render('editProfile', {
+        user: req.user
+    });
 });
 
 app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
@@ -203,7 +207,9 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
 });
 
 app.get('/newProfile', verifyAuthenticated, function (req, res) {
-    res.render('newProfile');
+    res.render('newProfile', {
+        user: req.user
+    });
 });
 
 
