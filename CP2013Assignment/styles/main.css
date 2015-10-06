@@ -140,7 +140,6 @@ nav ul ul ul {
     float: right;
 }
 
-
 .privileges{
     position: relative;
 }
@@ -155,6 +154,22 @@ nav ul ul ul {
     position: relative;
 }
 
+.lightConsumption label {
+    left: 40px;
+    position: relative;
+}
+
+.lightConsumption span{
+    right: 50%;
+    position:absolute;
+}
+
+.lightConsumption input{
+    right: 20px;
+    position:absolute;
+}
+
+
 .submitButton {
     padding: 5px;
     position:absolute;
@@ -167,6 +182,7 @@ nav ul ul ul {
     border-radius: 15px;
     border: 1px solid #999;
     font-size: 20px;
+
 }
 
 .submitButton:hover {

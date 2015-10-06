@@ -11,8 +11,45 @@
 <% include navbar.ejs %>
 
 <div id="content">
-    <p>Door page</p>
-</div>
+    <h1>Doors</h1>
+    <form class="lightConsumption" method="post" action="/updatePrivileges">
 
+        <label for="frontDoor">Front Door</label>
+        <span class="consumptionLabel">Closed</span>
+        <input id="bedroomLight" type="checkbox">
+
+        <br>
+
+        <label for="backDoor">Back Door</label>
+        <span class="Status">Closed</span>
+        <input id="officeLight" type="checkbox">
+
+        <br>
+        <br>
+
+        <h2>Access Log:</h2>
+        <br>
+        <table style="width:100%">
+            <tr>
+                <td>First Name:</td>
+                <td>Last Name:</td>
+                <td>Open/Close:</td>
+                <td>Date:</td>
+                <td>Time:</td>
+            </tr>
+            <tr>
+                <td>Jade</td>
+                <td>Mills-Brewster</td>
+                <td>Opened</td>
+                <td>06/10/2015</td>
+                <td>12:00</td>
+            </tr>
+
+        </table>
+
+
+    </form>
+
+</div>
 </body>
 </html>

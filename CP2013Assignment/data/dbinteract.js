@@ -38,6 +38,10 @@ function insertUser(firstname, lastname, email, username, password, bedroomLight
     });
 }
 
+//function removeUser(profileIndex){
+//    db.userinfo.removeIndex(profileIndex);
+//}
+
 function insertLight(light, state) {
     db.lights.insert({light: light, state: state}, function (error, insertDocument) {
         console.log('inserted light');
