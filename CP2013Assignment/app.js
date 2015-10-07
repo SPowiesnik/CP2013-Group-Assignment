@@ -129,7 +129,9 @@ function insertUser(firstname, lastname, email, username, password, bedroomLight
 
 //This is used to find all the current user names
 var userNames = [];
+var databseComplete;
 db.userinfo.find({}, function (err, docs) {
+    databseComplete = docs;
     for (var i = 0;i < docs.length;i++){
         userNames.push(docs[i].username);
     }
@@ -255,7 +257,8 @@ app.get('/lights', verifyAuthenticated, function (req, res) {
 app.get('/editProfile', verifyAuthenticated, function (req, res) {
     res.render('editProfile', {
         user: req.user,
-        userNames: userNames
+        userNames: userNames,
+        db : databseComplete
     });
 });
 

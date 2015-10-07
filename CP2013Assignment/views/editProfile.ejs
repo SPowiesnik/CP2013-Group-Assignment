@@ -5,6 +5,28 @@
     <title>Profiles</title>
     <script type="text/javascript" src="functions.js"></script>
     <link rel="stylesheet" type="text/css" href="/main.css"/>
+
+    <script>
+        var index = 0;
+        var dbcomplete = <%- JSON.stringify(db) %>;
+
+        function reloadCheck() {
+            index = document.getElementById("profileSelect").selectedIndex;
+            document.getElementById("bedroomLight").checked = dbcomplete[index].bedroomLight;
+            document.getElementById("officeLight").checked = dbcomplete[index].officeLight;
+            document.getElementById("kitchenLight").checked = dbcomplete[index].kitchenLight;
+            document.getElementById("livingLight").checked = dbcomplete[index].livingroomLight;
+            document.getElementById("bathroomLight").checked = dbcomplete[index].bathroomLight;
+            document.getElementById("laundryLight").checked = dbcomplete[index].laundryLight;
+            document.getElementById("frontDoor").checked = dbcomplete[index].frontDoor;
+            document.getElementById("backDoor").checked = dbcomplete[index].backDoor;
+            document.getElementById("temperature").checked = dbcomplete[index].temperature;
+            document.getElementById("humidity").checked = dbcomplete[index].humidity;
+            document.getElementById("emailNotifications").checked = dbcomplete[index].emailNotifications;
+            document.getElementById("adminPrivileges").checked = dbcomplete[index].adminPrivileges;
+        }
+    </script>
+
 </head>
 
 <body>
@@ -15,18 +37,19 @@
     <h1>Edit Profile Privileges</h1>
 
 
-
     <form class="privileges" method="post" action="/updatePrivileges">
 
-        <select id="profileSelect">
+
+        <select id="profileSelect" onload="reloadCheck()" onchange="reloadCheck()">
             <%for (var i = 0; i < userNames.length; i++){ %>
-            <option>  <%= userNames[i]%></option>
+            <option><%= userNames[i]%></option>
             <%}%>
         </select>
 
         <h3>Lights</h3>
         <label for="bedroomLight">Bedroom</label>
         <input id="bedroomLight" type="checkbox">
+
 
         <br>
 
