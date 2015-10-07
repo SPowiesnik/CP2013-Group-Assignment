@@ -12,12 +12,17 @@
 <% include navbar.ejs %>
 
 <div id="content">
-    <h1>Edit Profile</h1>
-    <form class="privileges" method="post" action="/updatePrivileges">
-        <select id="profileSelect">
-            <option value="">-select a profile-</option>
-        </select>
+    <h1>Edit Profile Privileges</h1>
 
+
+
+    <form class="privileges" method="post" action="/updatePrivileges">
+
+        <select id="profileSelect">
+            <%for (var i = 0; i < userNames.length; i++){ %>
+            <option>  <%= userNames[i]%></option>
+            <%}%>
+        </select>
 
         <h3>Lights</h3>
         <label for="bedroomLight">Bedroom</label>

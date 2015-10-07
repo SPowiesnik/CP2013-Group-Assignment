@@ -21,8 +21,8 @@ var Datastore = require('nedb');
 var lightModule = require('./static/functions');
 
 var db = {
-    userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true}),
-    //lights: new Datastore({filename: path.join(__dirname, 'data/lights.db'), autoload: true})
+    userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true})
+    //,lights: new Datastore({filename: path.join(__dirname, 'data/lights.db'), autoload: true})
 };
 
 var app = express();
@@ -125,6 +125,63 @@ function insertUser(firstname, lastname, email, username, password, bedroomLight
     });
 }
 
+
+
+//This is used to find all the current user names
+var userNames = [];
+db.userinfo.find({}, function (err, docs) {
+    for (var i = 0;i < docs.length;i++){
+        userNames.push(docs[i].username);
+    }
+});
+
+
+
+function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomLight,
+                  bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
+
+    //console.log(username);
+
+    /*
+    db.userinfo.find({ username: username }, function (err, docs) {
+        //console.log(docs);
+    });
+
+    db.userinfo.find({}, function (err, docs) {
+        for (var i = 0; i < docs.length; i++){
+            console.log(docs[i].username);
+        }
+    });
+
+
+     db.userinfo.insert({
+     firstname: firstname,
+     lastname: lastname,
+     email: email,
+     username: username,
+     password: password,
+     bedroomLight: bedroomLight,
+     officeLight: officeLight,
+     kitchenLight: kitchenLight,
+     livingroomLight: livingroomLight,
+     bathroomLight: bathroomLight,
+     laundryLight: laundryLight,
+     frontDoor: frontDoor,
+     backDoor: backDoor,
+     temperature: temperature,
+     humidity: humidity,
+     emailNotifications: emailNotifications,
+     adminPrivileges: adminPrivileges
+     }, function (error, insertDocument) {
+     console.log('inserted user');
+     });
+     */
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
         res.redirect('login');
@@ -143,7 +200,7 @@ app.get('/', function (req, res) {
                 light3: object[2].state,
                 light4: object[3].state,
                 light5: object[4].state,
-                light6: object[5].state,
+                light6: object[5].state
             });
         });
     }
@@ -194,17 +251,94 @@ app.get('/lights', verifyAuthenticated, function (req, res) {
     });
 });
 
+
 app.get('/editProfile', verifyAuthenticated, function (req, res) {
     res.render('editProfile', {
-        user: req.user
+        user: req.user,
+        userNames: userNames
     });
 });
 
 app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
-    //add logic here
+    if (req.body.bedroomLight === "on") {
+        var bedroomLight = true;
+    } else {
+        bedroomLight = false;
+    }
+    if (req.body.officeLight === "on") {
+        var officeLight = true;
+    } else {
+        officeLight = false;
+    }
+    if (req.body.kitchenLight === "on") {
+        var kitchenLight = true;
+    } else {
+        kitchenLight = false;
+    }
+    if (req.body.livingLight === "on") {
+        var livingLight = true;
+    } else {
+        livingLight = false;
+    }
+    if (req.body.bathroomLight === "on") {
+        var bathroomLight = true;
+    } else {
+        bathroomLight = false;
+    }
+    if (req.body.lastname === "on") {
+        var laundryLight = true;
+    } else {
+        laundryLight = false;
+    }
+    if (req.body.frontDoor === "on") {
+        var frontDoor = true;
+    } else {
+        frontDoor = false;
+    }
+    if (req.body.backDoor === "on") {
+        var backDoor = true;
+    } else {
+        backDoor = false;
+    }
+    if (req.body.temperature === "on") {
+        var temperature = true;
+    } else {
+        temperature = false;
+    }
+    if (req.body.humidity === "on") {
+        var humidity = true;
+    } else {
+        humidity = false;
+    }
+    if (req.body.emailNotifications === "on") {
+        var emailNotifications = true;
+    } else {
+        emailNotifications = false;
+    }
+    if (req.body.adminPrivileges === "on") {
+        var adminPrivileges = true;
+    } else {
+        adminPrivileges = false;
+    }
 
-
+    editUser(
+        req.body.profileSelect,
+        bedroomLight,
+        officeLight,
+        kitchenLight,
+        livingLight,
+        bathroomLight,
+        laundryLight,
+        frontDoor,
+        backDoor,
+        temperature,
+        humidity,
+        emailNotifications,
+        adminPrivileges
+    );
+    res.redirect("editProfile");
 });
+
 
 app.get('/newProfile', verifyAuthenticated, function (req, res) {
     res.render('newProfile', {
