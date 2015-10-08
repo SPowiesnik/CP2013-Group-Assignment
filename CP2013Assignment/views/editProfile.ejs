@@ -8,7 +8,7 @@
 
     <script>
         var index = 0;
-        var dbcomplete = <%- JSON.stringify(db) %>;
+        var dbcomplete = <%- JSON.stringify(db)%>;
         function reloadCheck() {
             index = document.getElementById("profileSelect").selectedIndex;
             if(index != 0) {
@@ -41,12 +41,14 @@
 
     <form class="privileges" method="post" action="/updatePrivileges">
 
-
         <select id="profileSelect" onload="reloadCheck()" onchange="reloadCheck()" name="profileSelect">
             <option selected="true" disabled="true" >Select User</option>
-            <%for (var i = 0; i < userNames.length; i++){ %>
-            <option required><%= userNames[i]%></option>
-            <%}%>
+
+            <script language="javascript" type="text/javascript">
+                for(var i=0;i<dbcomplete.length;i++)
+                {document.write("<option required>"+dbcomplete[i].username+"</option>");}
+            </script>
+
         </select>
 
         <h3>Lights</h3>
@@ -120,7 +122,6 @@
 
 
         <input class="submitButton" value="Save Changes" type="submit">
-        <input class="submitButton" value="Remove User" type="button" onclick="" style="margin-right:150px">
 
     </form>
 

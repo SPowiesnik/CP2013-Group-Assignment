@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Remove Profile</title>
+    <script type="text/javascript" src="functions.js"></script>
+    <link rel="stylesheet" type="text/css" href="/main.css"/>
+
+    <script>
+        var dbcomplete = <%- JSON.stringify(db)%>;
+    </script>
+
+</head>
+
+<body>
+
+<% include navbar.ejs %>
+
+<div id="content">
+    <h1>Remove User</h1>
+
+    <form class="privileges" method="post" action="/removeProfile">
+
+        <select id="profileSelect" name="profileSelect">
+            <option selected="true" disabled="true" >Select User</option>
+            <script language="javascript" type="text/javascript">
+                for(var i=0;i<dbcomplete.length;i++)
+                {document.write("<option required>"+dbcomplete[i].username+"</option>");}
+            </script>
+
+        </select>
+        <input class="submitButton" value="Remove User" type="submit">
+    </form>
+
+</div>
+
+</body>
+</html>

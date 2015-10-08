@@ -127,36 +127,15 @@ function insertUser(firstname, lastname, email, username, password, bedroomLight
 
 
 
-//This is used to find all the current user names
-var userNames = [];
-var databseComplete;
-db.userinfo.find({}, function (err, docs) {
-    databseComplete = docs;
-    for (var i = 0;i < docs.length;i++){
-        userNames.push(docs[i].username);
-    }
-});
 
-
+function removeUser(username){
+    db.userinfo.remove({username: username});
+}
 
 function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomLight,
                   bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
 
-    console.log(arguments);
-
-    /*
-    db.userinfo.find({ username: username }, function (err, docs) {
-        //console.log(docs);
-    });
-
-    db.userinfo.find({}, function (err, docs) {
-        for (var i = 0; i < docs.length; i++){
-            console.log(docs[i].username);
-        }
-    });
-*/
-
-     db.userinfo.update({'username':username},{$set:
+         db.userinfo.update({'username':username},{$set:
      {bedroomLight: bedroomLight,
      officeLight: officeLight,
      kitchenLight: kitchenLight,
@@ -185,7 +164,6 @@ app.get('/', function (req, res) {
             if (error) {
                 console.log("app.get /getLightState error");
             }
-            console.log("getLightStateExecuted");
 
             res.render('index', {
                 user: req.user,
@@ -246,14 +224,15 @@ app.get('/lights', verifyAuthenticated, function (req, res) {
     });
 });
 
-
 app.get('/editProfile', verifyAuthenticated, function (req, res) {
-    res.render('editProfile', {
-        user: req.user,
-        userNames: userNames,
-        db : databseComplete
+    db.userinfo.find({}, function (err, docs) {
+        res.render('editProfile', {
+            user: req.user,
+            db : docs
+        });
     });
 });
+
 
 app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     if (req.body.bedroomLight === "on") {
@@ -334,6 +313,28 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     );
     res.redirect("/");
 });
+
+app.get('/removeProfile', verifyAuthenticated, function (req, res) {
+    db.userinfo.find({}, function (err, docs) {
+        res.render('removeProfile', {
+            user: req.user,
+            db : docs
+        });
+    });
+});
+
+
+app.post('/removeProfile', verifyAuthenticated, function (req, res) {
+    removeUser(
+        req.body.profileSelect
+    );
+    res.redirect("/");
+});
+
+
+
+
+
 
 
 app.get('/newProfile', verifyAuthenticated, function (req, res) {
