@@ -142,7 +142,7 @@ db.userinfo.find({}, function (err, docs) {
 function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomLight,
                   bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
 
-    //console.log(username);
+    console.log(arguments);
 
     /*
     db.userinfo.find({ username: username }, function (err, docs) {
@@ -154,15 +154,10 @@ function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomL
             console.log(docs[i].username);
         }
     });
+*/
 
-
-     db.userinfo.insert({
-     firstname: firstname,
-     lastname: lastname,
-     email: email,
-     username: username,
-     password: password,
-     bedroomLight: bedroomLight,
+     db.userinfo.update({'username':username},{$set:
+     {bedroomLight: bedroomLight,
      officeLight: officeLight,
      kitchenLight: kitchenLight,
      livingroomLight: livingroomLight,
@@ -173,11 +168,9 @@ function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomL
      temperature: temperature,
      humidity: humidity,
      emailNotifications: emailNotifications,
-     adminPrivileges: adminPrivileges
-     }, function (error, insertDocument) {
-     console.log('inserted user');
-     });
-     */
+     adminPrivileges: adminPrivileges}
+     }
+     );
 
 }
 
@@ -339,7 +332,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
         emailNotifications,
         adminPrivileges
     );
-    res.redirect("editProfile");
+    res.redirect("/");
 });
 
 

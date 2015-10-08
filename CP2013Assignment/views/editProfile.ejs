@@ -9,21 +9,23 @@
     <script>
         var index = 0;
         var dbcomplete = <%- JSON.stringify(db) %>;
-
         function reloadCheck() {
             index = document.getElementById("profileSelect").selectedIndex;
-            document.getElementById("bedroomLight").checked = dbcomplete[index].bedroomLight;
-            document.getElementById("officeLight").checked = dbcomplete[index].officeLight;
-            document.getElementById("kitchenLight").checked = dbcomplete[index].kitchenLight;
-            document.getElementById("livingLight").checked = dbcomplete[index].livingroomLight;
-            document.getElementById("bathroomLight").checked = dbcomplete[index].bathroomLight;
-            document.getElementById("laundryLight").checked = dbcomplete[index].laundryLight;
-            document.getElementById("frontDoor").checked = dbcomplete[index].frontDoor;
-            document.getElementById("backDoor").checked = dbcomplete[index].backDoor;
-            document.getElementById("temperature").checked = dbcomplete[index].temperature;
-            document.getElementById("humidity").checked = dbcomplete[index].humidity;
-            document.getElementById("emailNotifications").checked = dbcomplete[index].emailNotifications;
-            document.getElementById("adminPrivileges").checked = dbcomplete[index].adminPrivileges;
+            if(index != 0) {
+                index--;
+                document.getElementById("bedroomLight").checked = dbcomplete[index].bedroomLight;
+                document.getElementById("officeLight").checked = dbcomplete[index].officeLight;
+                document.getElementById("kitchenLight").checked = dbcomplete[index].kitchenLight;
+                document.getElementById("livingLight").checked = dbcomplete[index].livingroomLight;
+                document.getElementById("bathroomLight").checked = dbcomplete[index].bathroomLight;
+                document.getElementById("laundryLight").checked = dbcomplete[index].laundryLight;
+                document.getElementById("frontDoor").checked = dbcomplete[index].frontDoor;
+                document.getElementById("backDoor").checked = dbcomplete[index].backDoor;
+                document.getElementById("temperature").checked = dbcomplete[index].temperature;
+                document.getElementById("humidity").checked = dbcomplete[index].humidity;
+                document.getElementById("emailNotifications").checked = dbcomplete[index].emailNotifications;
+                document.getElementById("adminPrivileges").checked = dbcomplete[index].adminPrivileges;
+            }
         }
     </script>
 
@@ -40,42 +42,41 @@
     <form class="privileges" method="post" action="/updatePrivileges">
 
 
-        <select id="profileSelect" onload="reloadCheck()" onchange="reloadCheck()">
+        <select id="profileSelect" onload="reloadCheck()" onchange="reloadCheck()" name="profileSelect">
+            <option selected="true" disabled="true" >Select User</option>
             <%for (var i = 0; i < userNames.length; i++){ %>
-            <option><%= userNames[i]%></option>
+            <option required><%= userNames[i]%></option>
             <%}%>
         </select>
 
         <h3>Lights</h3>
         <label for="bedroomLight">Bedroom</label>
-        <input id="bedroomLight" type="checkbox">
-
+        <input id="bedroomLight" name="bedroomLight" type="checkbox">
 
         <br>
 
         <label for="officeLight">Office</label>
-        <input id="officeLight" type="checkbox">
+        <input id="officeLight" name="officeLight" type="checkbox">
 
         <br>
 
         <label for="kitchenLight">Kitchen</label>
-        <input id="kitchenLight" type="checkbox">
-
+        <input id="kitchenLight" name="kitchenLight" type="checkbox">
 
         <br>
 
         <label for="livingLight">Living Room</label>
-        <input id="livingLight" type="checkbox">
+        <input id="livingLight" name="livingLight" type="checkbox">
 
         <br>
 
         <label for="bathroomLight">Bathroom</label>
-        <input id="bathroomLight" type="checkbox">
+        <input id="bathroomLight" name="bathroomLight" type="checkbox">
 
         <br>
 
         <label for="laundryLight">Laundry</label>
-        <input id="laundryLight" type="checkbox">
+        <input id="laundryLight" name="laundryLight" type="checkbox">
 
 
         <br>
@@ -83,39 +84,40 @@
 
         <h3>Doors</h3>
         <label for="frontDoor">Front Door</label>
-        <input id="frontDoor" type="checkbox">
+        <input id="frontDoor" name="frontDoor" type="checkbox">
 
         <br>
 
         <label for="backDoor">Back Door</label>
-        <input id="backDoor" type="checkbox">
+        <input id="backDoor" name="backDoor" type="checkbox">
 
         <br>
         <br>
 
         <h3>Miscellaneous</h3>
         <label for="temperature">Temperature</label>
-        <input id="temperature" type="checkbox">
+        <input id="temperature" name="temperature" type="checkbox">
 
         <br>
 
         <label for="humidity">Humidity</label>
-        <input id="humidity" type="checkbox">
+        <input id="humidity" name="humidity" type="checkbox">
 
         <br>
         <br>
 
         <h3>Security</h3>
         <label for="emailNotifications">Email Notifications</label>
-        <input id="emailNotifications" type="checkbox">
+        <input id="emailNotifications" name="emailNotifications" type="checkbox">
 
         <br>
         <br>
 
         <h3>Admin Privileges</h3>
         <label for="adminPrivileges">All Admin Privileges</label>
-        <input id="adminPrivileges" type="checkbox">
+        <input id="adminPrivileges" name="adminPrivileges" type="checkbox">
         <br>
+
 
         <input class="submitButton" value="Save Changes" type="submit">
         <input class="submitButton" value="Remove User" type="button" onclick="" style="margin-right:150px">
