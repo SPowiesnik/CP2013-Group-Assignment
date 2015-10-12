@@ -22,6 +22,7 @@ var lightModule = require('./static/functions');
 
 var db = {
     userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true})
+    ,accessLog: new Datastore({filename: path.join(__dirname, 'data/accessLog.db'), autoload: true})
     //,lights: new Datastore({filename: path.join(__dirname, 'data/lights.db'), autoload: true})
 };
 
@@ -212,12 +213,32 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
+///////////////////////////////////////////////DOORS////////////////////////////////////////////////////////////////////
 app.get('/doors', verifyAuthenticated, function (req, res) {
     res.render('doors', {
         user: req.user
     });
 });
 
+app.post('/addLogDoors', verifyAuthenticated, function (req, res) {
+    var date = new Date();
+    function addLog (){
+        var log = {
+            name: 'Jade',
+            lastname: 'Mills-Brewster',
+            action: 'Closed',
+            date: date.toDateString(),
+            time: date.toTimeString()
+        };
+        db.accessLog.insert(log,function (error, insertDocument) {
+            console.log('Inserted Log');
+        });
+    }
+    addLog();
+    res.redirect("/");
+});
+
+///////////////////////////////////////////////lights///////////////////////////////////////////////////////////////////
 app.get('/lights', verifyAuthenticated, function (req, res) {
     res.render('lights', {
         user: req.user
