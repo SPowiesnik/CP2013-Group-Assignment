@@ -88,7 +88,12 @@ nav ul ul ul {
 }
 
 #content {
-    margin: 100px 13% auto 13%;
+    width: 500px;
+    margin: 100px auto;
+}
+#doortTable{
+    width: 75%;
+    margin: 0px auto;
 }
 
 .housePlan {
@@ -154,6 +159,7 @@ nav ul ul ul {
     position: relative;
 }
 
+
 .lightConsumption label {
     left: 40px;
     position: relative;
@@ -168,6 +174,7 @@ nav ul ul ul {
     right: 20px;
     position:absolute;
 }
+
 
 
 .submitButton {
