@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Doors</title>
     <link rel="stylesheet" type="text/css" href="/main.css"/>
+
+    <script>
+        var dbcomplete = <%- JSON.stringify(db)%>;
+    </script>
+
 </head>
 
 <body>
@@ -36,6 +41,7 @@
 <div id="doortTable">
     <h2>Access Log:</h2>
     <br>
+
     <table style="width:100%">
         <tr>
             <td>First Name:</td>
@@ -44,14 +50,18 @@
             <td>Date:</td>
             <td>Time:</td>
         </tr>
-        <tr>
-            <td>Jade</td>
-            <td>Mills-Brewster</td>
-            <td>Opened</td>
-            <td>06/10/2015</td>
-            <td>12:00</td>
-        </tr>
 
+            <script>
+                for(var i=0;i<dbcomplete.length;i++) {
+                    document.write('<tr>');
+                    document.write('<td>' + dbcomplete[i].name + '</td>');
+                    document.write('<td>' + dbcomplete[i].lastname + '</td>');
+                    document.write('<td>' + dbcomplete[i].action + '</td>');
+                    document.write('<td>' + dbcomplete[i].date + '</td>');
+                    document.write('<td>' + dbcomplete[i].time + '</td>');
+                    document.write('</tr>');
+                }
+            </script>
     </table>
 </div>
 </body>

@@ -215,8 +215,11 @@ app.get('/logout', function (req, res) {
 
 ///////////////////////////////////////////////DOORS////////////////////////////////////////////////////////////////////
 app.get('/doors', verifyAuthenticated, function (req, res) {
-    res.render('doors', {
-        user: req.user
+    db.accessLog.find({},function (err, docs) {
+        res.render('doors', {
+            user: req.user,
+            db: docs
+        });
     });
 });
 
