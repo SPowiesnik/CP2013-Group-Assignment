@@ -154,10 +154,34 @@ function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomL
 
 }
 
+var date = new Date();
+function addLog (N,LN,A,D,T){
+    var log = {
+        name: N,
+        lastname: LN,
+        action: A,
+        date: D,
+        time: T
+    };
+    db.accessLog.insert(log,function (error, insertDocument) {
+        console.log('Inserted Log');
+    });
+}
+
+var temp = 25.00
+function temperature(){
+    var rand = (Math.random()*0.20)
+    if (Math.random() >= 0.25){temp = temp-rand}
+    else{temp = temp + rand}
+    console.log(temp)
+}
+// Call with setInterval(temperature, 60000)
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 app.get('/', function (req, res) {
+    setInterval(temperature, 1000)
     if (!req.isAuthenticated()) {
         res.redirect('login');
     } else {
@@ -178,6 +202,8 @@ app.get('/', function (req, res) {
             });
         });
     }
+
+
 
 });
 
@@ -224,20 +250,7 @@ app.get('/doors', verifyAuthenticated, function (req, res) {
 });
 
 app.post('/addLogDoors', verifyAuthenticated, function (req, res) {
-    var date = new Date();
-    function addLog (){
-        var log = {
-            name: 'Jade',
-            lastname: 'Mills-Brewster',
-            action: 'Closed',
-            date: date.toDateString(),
-            time: date.toTimeString()
-        };
-        db.accessLog.insert(log,function (error, insertDocument) {
-            console.log('Inserted Log');
-        });
-    }
-    addLog();
+    addLog('Anastazia', 'Sowter', 'Opened', date.toDateString(), date.toTimeString());
     res.redirect("/");
 });
 
