@@ -17,42 +17,47 @@
 
 <div id="content">
     <h1>Doors</h1>
-    <form class="privileges" method="post" action="/addLogDoors">
+
+    <div class="doorPage-Doors-Container">
+        <form class="doorPage-Form" method="post" action="/getDoorState">
+            <div class="frontDoor">
+                <input id="frontDoor" name="door" value="frontDoor" type="image">
+
+                <h1>Front Door</h1>
+            </div>
+
+            <div class="backDoor">
+                <input id="backDoor" name="door" value="backDoor" type="image">
+
+                <h1>Back Door</h1>
+            </div>
+        </form>
+        <script type="text/javascript">
+            if (<%= user.frontDoor%>) {
+                document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+            }
+            if (<%= user.backDoor%>) {
+                document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+            }
+        </script>
+    </div>
+
+
+    <div id="doorTable">
+        <h2>Access Log:</h2>
+        <br>
+
         <table style="width:100%">
             <tr>
-                <td>Front Door</td>
-                <td>Closed</td>
-                <td><input type="checkbox"></td>
+                <td>First Name:</td>
+                <td>Last Name:</td>
+                <td>Open/Close:</td>
+                <td>Date:</td>
+                <td>Time:</td>
             </tr>
-            <tr>
-                <td>Back Door</td>
-                <td>Closed</td>
-                <td><input type="checkbox"></td>
-            </tr>
-        </table>
-
-        <br>
-        <br>
-
-        <input class="submitButton" value="Add Log" type="submit">
-    </form>
-
-</div>
-<div id="doortTable">
-    <h2>Access Log:</h2>
-    <br>
-
-    <table style="width:100%">
-        <tr>
-            <td>First Name:</td>
-            <td>Last Name:</td>
-            <td>Open/Close:</td>
-            <td>Date:</td>
-            <td>Time:</td>
-        </tr>
 
             <script>
-                for(var i=0;i<dbcomplete.length;i++) {
+                for (var i = 0; i < dbcomplete.length; i++) {
                     document.write('<tr>');
                     document.write('<td>' + dbcomplete[i].name + '</td>');
                     document.write('<td>' + dbcomplete[i].lastname + '</td>');
@@ -62,7 +67,9 @@
                     document.write('</tr>');
                 }
             </script>
-    </table>
+        </table>
+    </div>
 </div>
+
 </body>
 </html>

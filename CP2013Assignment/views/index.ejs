@@ -14,32 +14,38 @@
     <p>Hello, <%= user.username %></p>
     <br>
 
-    <div class="light-set">
+    <p>Temperature: <%= temperature %></p>
+
+    <div class="housePlan-Container">
         <img class="housePlan" src="/HousePlan.jpg">
 
+        <form method="post" action="/getDoorState">
+            <input class="door door-1" id="frontDoor" name="door" value="frontDoor" type="image">
+            <input class="door door-2" id="backDoor" name="door" value="backDoor" type="image">
+        </form>
+
         <form method="post" action="/getLightState">
-            <% if (user.livingroomLight) {%>
-                <input class="light light-1" id="light1" name="light" value="light1" type="image">
-            <%}%>
-            <% if (user.bedroomLight) {%>
+            <% if (user.livingroomLight) { %>
+            <input class="light light-1" id="light1" name="light" value="light1" type="image">
+            <% } %>
+            <% if (user.bedroomLight) { %>
             <input class="light light-2" id="light2" name="light" value="light2" type="image">
-            <%}%>
-            <% if (user.officeLight) {%>
+            <% } %>
+            <% if (user.officeLight) { %>
             <input class="light light-3" id="light3" name="light" value="light3" type="image">
-            <%}%>
-            <% if (user.bathroomLight) {%>
+            <% } %>
+            <% if (user.bathroomLight) { %>
             <input class="light light-4" id="light4" name="light" value="light4" type="image">
-            <%}%>
-            <% if (user.laundryLight) {%>
+            <% } %>
+            <% if (user.laundryLight) { %>
             <input class="light light-5" id="light5" name="light" value="light5" type="image">
-            <%}%>
-            <% if (user.kitchenLight) {%>
+            <% } %>
+            <% if (user.kitchenLight) { %>
             <input class="light light-6" id="light6" name="light" value="light6" type="image">
-            <%}%>
+            <% } %>
 
         </form>
     </div>
-    <p>Temperature: <%= temperature %></p>
 
 </div>
 
@@ -47,23 +53,29 @@
 <script type="text/javascript">
 
 
-    if(<%= user.livingroomLight%>){
+    if (<%= user.livingroomLight%>) {
         document.getElementById('light1').src = "light<%= light1 %>.png";
     }
-    if(<%= user.bedroomLight%>) {
+    if (<%= user.bedroomLight%>) {
         document.getElementById('light2').src = "light<%= light2 %>.png";
     }
-    if(<%= user.officeLight%>) {
+    if (<%= user.officeLight%>) {
         document.getElementById('light3').src = "light<%= light3 %>.png";
     }
-    if(<%= user.bathroomLight%>) {
+    if (<%= user.bathroomLight%>) {
         document.getElementById('light4').src = "light<%= light4 %>.png";
     }
-    if(<%= user.laundryLight%>) {
+    if (<%= user.laundryLight%>) {
         document.getElementById('light5').src = "light<%= light5 %>.png";
     }
-    if(<%= user.kitchenLight%>) {
+    if (<%= user.kitchenLight%>) {
         document.getElementById('light6').src = "light<%= light6 %>.png";
+    }
+    if (<%= user.frontDoor%>) {
+        document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+    }
+    if (<%= user.backDoor%>) {
+        document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
     }
 </script>
 

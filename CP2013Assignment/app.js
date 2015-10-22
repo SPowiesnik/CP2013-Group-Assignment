@@ -18,11 +18,12 @@ var favicon = require('serve-favicon');
 
 var Datastore = require('nedb');
 
-var lightModule = require('./static/functions');
+var lightModule = require('./data/lightModule');
+var doorModule = require('./data/doorModule');
 
 var db = {
     userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true})
-    ,accessLog: new Datastore({filename: path.join(__dirname, 'data/accessLog.db'), autoload: true})
+    , accessLog: new Datastore({filename: path.join(__dirname, 'data/accessLog.db'), autoload: true})
     //,lights: new Datastore({filename: path.join(__dirname, 'data/lights.db'), autoload: true})
 };
 
@@ -127,35 +128,35 @@ function insertUser(firstname, lastname, email, username, password, bedroomLight
 }
 
 
-
-
-function removeUser(username){
+function removeUser(username) {
     db.userinfo.remove({username: username});
 }
 
 function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomLight,
                   bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
 
-         db.userinfo.update({'username':username},{$set:
-     {bedroomLight: bedroomLight,
-     officeLight: officeLight,
-     kitchenLight: kitchenLight,
-     livingroomLight: livingroomLight,
-     bathroomLight: bathroomLight,
-     laundryLight: laundryLight,
-     frontDoor: frontDoor,
-     backDoor: backDoor,
-     temperature: temperature,
-     humidity: humidity,
-     emailNotifications: emailNotifications,
-     adminPrivileges: adminPrivileges}
-     }
-     );
+    db.userinfo.update({'username': username}, {
+            $set: {
+                bedroomLight: bedroomLight,
+                officeLight: officeLight,
+                kitchenLight: kitchenLight,
+                livingroomLight: livingroomLight,
+                bathroomLight: bathroomLight,
+                laundryLight: laundryLight,
+                frontDoor: frontDoor,
+                backDoor: backDoor,
+                temperature: temperature,
+                humidity: humidity,
+                emailNotifications: emailNotifications,
+                adminPrivileges: adminPrivileges
+            }
+        }
+    );
 
 }
 
 var date = new Date();
-function addLog (N,LN,A,D,T){
+function addLog(N, LN, A, D, T) {
     var log = {
         name: N,
         lastname: LN,
@@ -163,46 +164,55 @@ function addLog (N,LN,A,D,T){
         date: D,
         time: T
     };
-    db.accessLog.insert(log,function (error, insertDocument) {
+    db.accessLog.insert(log, function (error, insertDocument) {
         console.log('Inserted Log');
     });
 }
 
-var temp = 25.00
-function temperature(){
-    var rand = (Math.random()*0.20)
-    if (Math.random() >= 0.25){temp = temp-rand}
-    else{temp = temp + rand}
-    console.log(temp)
+
+var temp = 25;
+function temperature(min, max) {
+    temp += Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log(temp);
 }
-// Call with setInterval(temperature, 60000)
+
+setInterval(function () {
+    temperature(-1, 1);
+}, 60000);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 app.get('/', function (req, res) {
-    setInterval(temperature, 1000)
     if (!req.isAuthenticated()) {
         res.redirect('login');
     } else {
-        lightModule.get(function (error, object) {
+        lightModule.get(function (error, lightObject) {
             if (error) {
                 console.log("app.get /getLightState error");
-            }
+            } else {
 
-            res.render('index', {
-                user: req.user,
-                temperature: 30,
-                light1: object[0].state,
-                light2: object[1].state,
-                light3: object[2].state,
-                light4: object[3].state,
-                light5: object[4].state,
-                light6: object[5].state
-            });
+                doorModule.get(function (error, doorObject) {
+                    if (error) {
+                        console.log("app.get /getDoorState error");
+                    } else {
+                        res.render('index', {
+                            user: req.user,
+                            temperature: temp.toPrecision(2),
+                            light1: lightObject[0].state,
+                            light2: lightObject[1].state,
+                            light3: lightObject[2].state,
+                            light4: lightObject[3].state,
+                            light5: lightObject[4].state,
+                            light6: lightObject[5].state,
+                            backDoor: doorObject[0].state,
+                            frontDoor: doorObject[1].state
+                        });
+                    }
+                });
+            }
         });
     }
-
 
 
 });
@@ -212,13 +222,40 @@ app.post('/getLightState', function (req, res) {
         if (error) {
             console.log("app.get /getLightState error");
         }
-        lightModule.update(req.body.light, object.state, function (error, object) {
+        lightModule.update(req.body.light, object.state, function (error) {
             if (error) {
                 console.log("app.get /getLightState error");
+
             }
         });
     });
-    res.redirect(req.header('Referer'));
+    res.redirect('/');
+});
+
+
+app.post('/getDoorState', function (req, res) {
+
+    doorModule.getOne(req.body.door, function (error, object) {
+        if (error) {
+            console.log("app.get /getDoorState error");
+        }
+        console.log(object.state);
+        var state;
+        if (object.state === "unlocked") {
+            state = "locked";
+        } else if (object.state === "locked") {
+            state = "unlocked";
+        }
+        addLog(req.user.firstname, req.user.lastname, state, date.toDateString(), date.toLocaleTimeString());
+        doorModule.update(req.body.door, object.state, function (error) {
+            if (error) {
+                console.log("app.get /getDoorState error");
+
+            }
+        });
+    });
+
+    res.redirect(req.headers['referer']);
 });
 
 //provides login page
@@ -241,17 +278,20 @@ app.get('/logout', function (req, res) {
 
 ///////////////////////////////////////////////DOORS////////////////////////////////////////////////////////////////////
 app.get('/doors', verifyAuthenticated, function (req, res) {
-    db.accessLog.find({},function (err, docs) {
-        res.render('doors', {
-            user: req.user,
-            db: docs
+    db.accessLog.find({}).sort({date: 1, time: -1}).exec(function (err, docs) {
+        doorModule.get(function (error, doorObject) {
+            if (error) {
+                console.log("app.get /getDoorState error");
+            } else {
+                res.render('doors', {
+                    user: req.user,
+                    db: docs,
+                    backDoor: doorObject[0].state,
+                    frontDoor: doorObject[1].state
+                });
+            }
         });
     });
-});
-
-app.post('/addLogDoors', verifyAuthenticated, function (req, res) {
-    addLog('Anastazia', 'Sowter', 'Opened', date.toDateString(), date.toTimeString());
-    res.redirect("/");
 });
 
 ///////////////////////////////////////////////lights///////////////////////////////////////////////////////////////////
@@ -265,7 +305,7 @@ app.get('/editProfile', verifyAuthenticated, function (req, res) {
     db.userinfo.find({}, function (err, docs) {
         res.render('editProfile', {
             user: req.user,
-            db : docs
+            db: docs
         });
     });
 });
@@ -355,7 +395,7 @@ app.get('/removeProfile', verifyAuthenticated, function (req, res) {
     db.userinfo.find({}, function (err, docs) {
         res.render('removeProfile', {
             user: req.user,
-            db : docs
+            db: docs
         });
     });
 });
@@ -367,11 +407,6 @@ app.post('/removeProfile', verifyAuthenticated, function (req, res) {
     );
     res.redirect("/");
 });
-
-
-
-
-
 
 
 app.get('/newProfile', verifyAuthenticated, function (req, res) {
