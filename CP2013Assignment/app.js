@@ -156,7 +156,7 @@ function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomL
 }
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function addZero(i) {
     if (i < 10) {
         i = "0" + i;
@@ -197,12 +197,29 @@ function addLog(N, LN, A, D, T) {
 var temp = 25;
 function temperature(min, max) {
     temp += Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log(temp);
+    console.log('Temperature :'+temp);
 }
 
 setInterval(function () {
-    temperature(-1, 1);
-}, 60000);
+    temperature(-2, 2);}, 60000);
+
+var humid = 65;
+function humidity(min, max) {
+    humid += Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log('humidity: ' + humid);
+}
+
+setInterval(function () {
+    humidity(-1, 1);}, 60000);
+
+var humid = 65;
+function humidity(min, max) {
+    humid += Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log('humidity: ' + humid);
+}
+
+setInterval(function () {
+    humidity(-1, 1);}, 60000);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -222,6 +239,7 @@ app.get('/', function (req, res) {
                     } else {
                         res.render('index', {
                             user: req.user,
+                            humidity: humid,
                             temperature: temp.toPrecision(2),
                             light1: lightObject[0].state,
                             light2: lightObject[1].state,
@@ -318,6 +336,21 @@ app.get('/doors', verifyAuthenticated, function (req, res) {
     });
 });
 
+app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
+    db.accessLog.find({}).sort({date: 1, time: -1}).exec(function (err, docs) {
+        res.render('accessLogPage', {
+            user: req.user,
+            db: docs,
+        });
+    });
+});
+
+app.post('/emptyLog', verifyAuthenticated, function (req, res) {
+        console.log('cleared Log')
+        db.accessLog.remove({}, { multi: true });
+        res.redirect("accessLogPage");
+});
+
 ///////////////////////////////////////////////lights///////////////////////////////////////////////////////////////////
 app.get('/lights', verifyAuthenticated, function (req, res) {
     res.render('lights', {
@@ -333,7 +366,6 @@ app.get('/editProfile', verifyAuthenticated, function (req, res) {
         });
     });
 });
-
 
 app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     if (req.body.bedroomLight === "on") {
@@ -412,7 +444,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
         emailNotifications,
         adminPrivileges
     );
-    res.redirect("/");
+    res.redirect("editProfile");
 });
 
 app.get('/removeProfile', verifyAuthenticated, function (req, res) {
@@ -429,7 +461,7 @@ app.post('/removeProfile', verifyAuthenticated, function (req, res) {
     removeUser(
         req.body.profileSelect
     );
-    res.redirect("/");
+    res.redirect("removeProfile");
 });
 
 
@@ -526,7 +558,7 @@ app.post('/createProfile', verifyAuthenticated, function (req, res) {
                     emailNotifications,
                     adminPrivileges
                 );
-                res.redirect("/");
+                res.redirect("newProfile");
             }
         } else {
             res.send("username is already taken");

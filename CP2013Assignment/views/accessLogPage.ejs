@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Doors</title>
+    <link rel="stylesheet" type="text/css" href="/main.css"/>
+</head>
+<script>
+    var dbcomplete = <%- JSON.stringify(db)%>;
+</script>
+<body>
+
+<% include navbar.ejs %>
+
+<div id="content">
+    <div id="doorTable">
+        <h2>Access Log:</h2>
+        <br>
+
+        <table style="width:100%">
+            <tr>
+                <td>First Name:</td>
+                <td>Last Name:</td>
+                <td>Open/Close:</td>
+                <td>Date:</td>
+                <td>Time:</td>
+            </tr>
+
+            <script>
+                for (var i = 0; i < dbcomplete.length; i++) {
+                    document.write('<tr>');
+                    document.write('<td>' + dbcomplete[i].name + '</td>');
+                    document.write('<td>' + dbcomplete[i].lastname + '</td>');
+                    document.write('<td>' + dbcomplete[i].action + '</td>');
+                    document.write('<td>' + dbcomplete[i].date + '</td>');
+                    document.write('<td>' + dbcomplete[i].time + '</td>');
+                    document.write('</tr>');
+                }
+            </script>
+        </table>
+    </div>
+
+    <form class="privileges" method="post" action="/emptyLog">
+        <input class="submitButton" value="Clear Log" type="submit">
+    </form>
+</div>
+
+</body>
+</html>

@@ -35,39 +35,19 @@
         <script type="text/javascript">
             if (<%= user.frontDoor%>) {
                 document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+            } else{
+                document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+                document.getElementById('frontDoor').disabled = true;
+                document.getElementById('frontDoor').style.opacity = 0.4;
             }
             if (<%= user.backDoor%>) {
                 document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+            } else {
+                document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+                document.getElementById('backDoor').disabled = true;
+                document.getElementById('backDoor').style.opacity = 0.4;
             }
         </script>
-    </div>
-
-
-    <div id="doorTable">
-        <h2>Access Log:</h2>
-        <br>
-
-        <table style="width:100%">
-            <tr>
-                <td>First Name:</td>
-                <td>Last Name:</td>
-                <td>Open/Close:</td>
-                <td>Date:</td>
-                <td>Time:</td>
-            </tr>
-
-            <script>
-                for (var i = 0; i < dbcomplete.length; i++) {
-                    document.write('<tr>');
-                    document.write('<td>' + dbcomplete[i].name + '</td>');
-                    document.write('<td>' + dbcomplete[i].lastname + '</td>');
-                    document.write('<td>' + dbcomplete[i].action + '</td>');
-                    document.write('<td>' + dbcomplete[i].date + '</td>');
-                    document.write('<td>' + dbcomplete[i].time + '</td>');
-                    document.write('</tr>');
-                }
-            </script>
-        </table>
     </div>
 </div>
 

@@ -6,7 +6,7 @@
     <script data-main="/functions" src="/functions.js"></script>
     <link rel="stylesheet" type="text/css" href="/main.css"/>
 </head>
-<% include navbar.ejs %>
+    <% include navbar.ejs %>
 <body>
 
 
@@ -15,6 +15,7 @@
     <br>
 
     <p>Temperature: <%= temperature %></p>
+    <p>Humidity: <%= humidity %>%</p>
 
     <div class="housePlan-Container">
         <img class="housePlan" src="/HousePlan.jpg">
@@ -25,24 +26,15 @@
         </form>
 
         <form method="post" action="/getLightState">
-            <% if (user.livingroomLight) { %>
+
             <input class="light light-1" id="light1" name="light" value="light1" type="image">
-            <% } %>
-            <% if (user.bedroomLight) { %>
+
             <input class="light light-2" id="light2" name="light" value="light2" type="image">
-            <% } %>
-            <% if (user.officeLight) { %>
+
             <input class="light light-3" id="light3" name="light" value="light3" type="image">
-            <% } %>
-            <% if (user.bathroomLight) { %>
             <input class="light light-4" id="light4" name="light" value="light4" type="image">
-            <% } %>
-            <% if (user.laundryLight) { %>
             <input class="light light-5" id="light5" name="light" value="light5" type="image">
-            <% } %>
-            <% if (user.kitchenLight) { %>
             <input class="light light-6" id="light6" name="light" value="light6" type="image">
-            <% } %>
 
         </form>
     </div>
@@ -55,27 +47,66 @@
 
     if (<%= user.livingroomLight%>) {
         document.getElementById('light1').src = "light<%= light1 %>.png";
+    }else{
+        document.getElementById('light1').src = "light<%= light1 %>.png";
+        document.getElementById('light1').disabled = true;
+        document.getElementById('light1').style.opacity = 0.4;
     }
+
     if (<%= user.bedroomLight%>) {
         document.getElementById('light2').src = "light<%= light2 %>.png";
+    }else{
+        document.getElementById('light2').src = "light<%= light2 %>.png";
+        document.getElementById('light2').disabled = true;
+        document.getElementById('light2').style.opacity = 0.4;
     }
+
     if (<%= user.officeLight%>) {
         document.getElementById('light3').src = "light<%= light3 %>.png";
+    }else{
+        document.getElementById('light3').src = "light<%= light3 %>.png";
+        document.getElementById('light3').disabled = true;
+        document.getElementById('light3').style.opacity = 0.4;
     }
+
     if (<%= user.bathroomLight%>) {
         document.getElementById('light4').src = "light<%= light4 %>.png";
+    }else{
+        document.getElementById('light4').src = "light<%= light4 %>.png";
+        document.getElementById('light4').disabled = true;
+        document.getElementById('light4').style.opacity = 0.4;
     }
+
     if (<%= user.laundryLight%>) {
         document.getElementById('light5').src = "light<%= light5 %>.png";
+    }else{
+        document.getElementById('light5').src = "light<%= light5 %>.png";
+        document.getElementById('light5').disabled = true;
+        document.getElementById('light5').style.opacity = 0.4;
     }
+
     if (<%= user.kitchenLight%>) {
         document.getElementById('light6').src = "light<%= light6 %>.png";
+    }else{
+        document.getElementById('light6').src = "light<%= light6 %>.png";
+        document.getElementById('light6').disabled = true;
+        document.getElementById('light6').style.opacity = 0.4;
     }
+
     if (<%= user.frontDoor%>) {
         document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+    }else {
+        document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+        document.getElementById('frontDoor').disabled = true;
+        document.getElementById('frontDoor').style.opacity = 0.4;
+
     }
     if (<%= user.backDoor%>) {
         document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+    }else {
+        document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+        document.getElementById('backDoor').disabled = true;
+        document.getElementById('backDoor').style.opacity = 0.4;
     }
 </script>
 
