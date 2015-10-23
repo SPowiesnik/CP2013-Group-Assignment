@@ -155,7 +155,31 @@ function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomL
 
 }
 
-var date = new Date();
+
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+function getTime() {
+    var date = new Date();
+    var h = addZero(date.getHours());
+    var m = addZero(date.getMinutes());
+    var s = addZero(date.getSeconds());
+    return (h + ':' + m + ':' + s)
+}
+
+function getDate(){
+    var date = new Date();
+    var D = date.getDate()
+    var M = (date.getMonth()+1)
+    var Y = date.getFullYear()
+    return (D +'/'+ M +'/'+ Y)
+}
+
 function addLog(N, LN, A, D, T) {
     var log = {
         name: N,
@@ -246,7 +270,7 @@ app.post('/getDoorState', function (req, res) {
         } else if (object.state === "locked") {
             state = "unlocked";
         }
-        addLog(req.user.firstname, req.user.lastname, state, date.toDateString(), date.toLocaleTimeString());
+        addLog(req.user.firstname, req.user.lastname, state, getDate() , getTime());
         doorModule.update(req.body.door, object.state, function (error) {
             if (error) {
                 console.log("app.get /getDoorState error");
