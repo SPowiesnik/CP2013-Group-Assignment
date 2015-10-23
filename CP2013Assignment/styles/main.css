@@ -5,7 +5,9 @@
     padding: 0;
     margin: 0;
     font-family: 'Lato', sans-serif;
+
 }
+
 
 
 
@@ -18,7 +20,7 @@ nav {
     padding-right: 13%;
     width: 100%;
     min-width: 700px;
-    background: linear-gradient(#eeeeee 0%, gray 100%);
+    background: linear-gradient(limegreen 0%, forestgreen 100%);
     box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .1);
     border: 1px solid rgba(0, 0, 0, .1);
 }
@@ -66,7 +68,7 @@ nav ul li a {
 nav ul ul {
     margin-left: 0;
     display: none;
-    background: gray;
+    background: forestgreen;
     position: absolute;
     top: 100%;
     box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, .1);
@@ -95,10 +97,10 @@ nav ul ul ul {
 }
 
 #doorTable {
-    width: 75%;
-    height: 300px;
+    width: 80%;
+    height: 700px;
     margin: 0 auto;
-    overflow: auto;
+    overflow: scroll;
 }
 
 .doorPage-Doors-Container {
@@ -251,7 +253,7 @@ nav ul ul ul {
 .logIn {
     clear: both;
     margin-top: 20px;
-    border: solid gray;
+    border: solid forestgreen;
     height: 50px;
     width: 357px;
 
@@ -260,14 +262,14 @@ nav ul ul ul {
 
     -webkit-transition: -webkit-box-shadow .1s ease-in-out;
 
-    -webkit-box-shadow: 0px 3px 0px #eeeeee, 0px 3px 6px gray;
-    -moz-box-shadow: 0px 3px 0px #eeeeee, 0px 3px 6px gray;
-    box-shadow: 0px 3px 0px #eeeeee, 0px 3px 6px gray;
+    -webkit-box-shadow: 0px 3px 0px limegreen, 0px 3px 6px forestgreen;
+    -moz-box-shadow: 0px 3px 0px limegreen, 0px 3px 6px forestgreen;
+    box-shadow: 0px 3px 0px limegreen, 0px 3px 6px forestgreen;
 
-    background: -moz-linear-gradient(#eeeeee 0%, gray 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, gray));
-    background: -webkit-linear-gradient(#eeeeee 0%, gray);
-    background: linear-gradient(#eeeeee 0%, gray 100%);
+    background: -moz-linear-gradient(limegreen 0%, forestgreen 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, limegreen), color-stop(100%, forestgreen));
+    background: -webkit-linear-gradient(limegreen 0%, forestgreen);
+    background: linear-gradient(limegreen 0%, forestgreen 100%);
 }
 
 .logIn input {
@@ -316,15 +318,15 @@ nav ul ul ul {
 .textBox {
     margin: 10% auto;
     width: 400px;
-    border: 3px solid gray;
+    border: 3px solid forestgreen;
     padding: 20px;
     height: 250px;
 
     background: #eeeeee;
-    background: -moz-linear-gradient(#eeeeee 0%, gray 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #eeeeee), color-stop(100%, gray));
-    background: -webkit-linear-gradient(#eeeeee 0%, gray 100%);
-    background: linear-gradient(#eeeeee 0%, gray 100%);
+    background: -moz-linear-gradient(limegreen 0%, forestgreen 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, limegreen), color-stop(100%, forestgreen));
+    background: -webkit-linear-gradient(limegreen 0%, forestgreen 100%);
+    background: linear-gradient(limegreen 0%, forestgreen 100%);
 }
 
 input[type="checkbox"] {
@@ -398,6 +400,13 @@ select {
     .privileges {
         position: relative;
         width: 100%;
+    }
+
+    #doorTable {
+        width: 100%;
+        height: 900px;
+        margin: 5px;
+        overflow: scroll;
     }
 
 }
