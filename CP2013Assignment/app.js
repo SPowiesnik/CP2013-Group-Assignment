@@ -33,10 +33,10 @@ var server = http.createServer(app);
 
 // create reusable transporter object using SMTP transport
 var transporter = nodemailer.createTransport({
-    service: 'hotmail',
+    service: 'gmail',
     auth: {
-        user: '',
-        pass: ''
+        user: 'jasons.automated.house@gmail.com',
+        pass: 'jason11111'
     }
 });
 
@@ -306,14 +306,13 @@ app.post('/getLightState', function (req, res) {
     res.redirect('/');
 });
 
-function sendEmail(from, to, subject, text, html) {
+function sendEmail(from, to, subject, text) {
     // setup e-mail data with unicode symbols
     var mailOptions = {
         from: from, // sender address
         to: to, // list of receivers
         subject: subject, // Subject line
-        text: text, // plaintext body
-        html: html // html body
+        text: text // plaintext body
     };
 
     // send mail with defined transport object
@@ -343,8 +342,7 @@ app.post('/updateDoorState', function (req, res) {
                     sendEmail('Jason Holdsworth <shaquille_powiesnik@hotmail.com>', // sender address
                         receivers, // list of receivers
                         'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
-                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door, // plaintext body
-                        '<a href="views/doors.ejs">Hello world </a>'); // html body
+                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door); // plaintext body
                 });
             } else {
                 console.log(door.state);
