@@ -2,7 +2,6 @@
  * Created by Shaquille on 15/09/2015.
  */
 
-
 function toggleImg(state) {
     if (state === "off") {
         document.getElementById("light").src = "/lighton.png";

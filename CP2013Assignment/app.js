@@ -11,10 +11,11 @@ var expressSession = require('express-session');
 var passport = require('passport');
 var passportLocal = require('passport-local');
 
-//var mysql = require('mysql');
 var http = require('http');
 var path = require('path');
 var favicon = require('serve-favicon');
+
+var nodemailer = require('nodemailer');
 
 var Datastore = require('nedb');
 
@@ -24,12 +25,20 @@ var doorModule = require('./data/doorModule');
 var db = {
     userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true})
     , accessLog: new Datastore({filename: path.join(__dirname, 'data/accessLog.db'), autoload: true})
-    //,lights: new Datastore({filename: path.join(__dirname, 'data/lights.db'), autoload: true})
 };
 
 var app = express();
 
 var server = http.createServer(app);
+
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'hotmail',
+    auth: {
+        user: '',
+        pass: ''
+    }
+});
 
 app.set('view engine', 'ejs');
 
@@ -156,7 +165,7 @@ function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomL
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Log Date/Time Functions
 function addZero(i) {
     if (i < 10) {
         i = "0" + i;
@@ -172,37 +181,41 @@ function getTime() {
     return (h + ':' + m + ':' + s)
 }
 
-function getDate(){
+function getDate() {
     var date = new Date();
-    var D = date.getDate()
-    var M = (date.getMonth()+1)
-    var Y = date.getFullYear()
-    return (D +'/'+ M +'/'+ Y)
+    var D = date.getDate();
+    var M = (date.getMonth() + 1);
+    var Y = date.getFullYear();
+    return (D + '/' + M + '/' + Y)
 }
 
-function addLog(N, LN, A, D, T) {
+//Access Log Insert
+function addLog(firstname, lastname, action, door, date, time) {
     var log = {
-        name: N,
-        lastname: LN,
-        action: A,
-        date: D,
-        time: T
+        name: firstname,
+        lastname: lastname,
+        action: action,
+        door: door,
+        date: date,
+        time: time
     };
     db.accessLog.insert(log, function (error, insertDocument) {
         console.log('Inserted Log');
     });
 }
 
-
+//Temperature Dummy Data
 var temp = 25;
 function temperature(min, max) {
     temp += Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log('Temperature :'+temp);
+    console.log('Temperature :' + temp);
 }
 
 setInterval(function () {
-    temperature(-2, 2);}, 60000);
+    temperature(-2, 2);
+}, 60000);
 
+//Humidity Percentage Dummy Data
 var humid = 65;
 function humidity(min, max) {
     humid += Math.floor(Math.random() * (max - min + 1)) + min;
@@ -210,19 +223,40 @@ function humidity(min, max) {
 }
 
 setInterval(function () {
-    humidity(-1, 1);}, 60000);
+    humidity(-1, 1);
+}, 60000);
 
-var humid = 65;
-function humidity(min, max) {
-    humid += Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log('humidity: ' + humid);
+//Lights Power Consumption Dummy Data
+var light1;
+var light2;
+var light3;
+var light4;
+var light5;
+var light6;
+var total = 0;
+var currentTotal;
+function lightPower(min, max) {
+    light1 = Math.floor(Math.random() * (max - min + 1)) + min;
+    light2 = Math.floor(Math.random() * (max - min + 1)) + min;
+    light3 = Math.floor(Math.random() * (max - min + 1)) + min;
+    light4 = Math.floor(Math.random() * (max - min + 1)) + min;
+    light5 = Math.floor(Math.random() * (max - min + 1)) + min;
+    light6 = Math.floor(Math.random() * (max - min + 1)) + min;
+    currentTotal = light1 + light2 + light3 + light4 + light5 + light6;
+    total = total + currentTotal;
 }
 
 setInterval(function () {
-    humidity(-1, 1);}, 60000);
 
+    humidity(-1, 1);
+}, 60000);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+setInterval(function () {
+    lightPower(10, 15);
+}, 600);
+
+////////////////////////////////////////////Page Data Start/////////////////////////////////////////////////////////////
 
 app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
@@ -234,6 +268,7 @@ app.get('/', function (req, res) {
             } else {
 
                 doorModule.get(function (error, doorObject) {
+                    console.log(doorObject[0]);
                     if (error) {
                         console.log("app.get /getDoorState error");
                     } else {
@@ -247,16 +282,14 @@ app.get('/', function (req, res) {
                             light4: lightObject[3].state,
                             light5: lightObject[4].state,
                             light6: lightObject[5].state,
-                            backDoor: doorObject[0].state,
-                            frontDoor: doorObject[1].state
+                            backDoor: doorObject[0],
+                            frontDoor: doorObject[1]
                         });
                     }
                 });
             }
         });
     }
-
-
 });
 
 app.post('/getLightState', function (req, res) {
@@ -267,39 +300,104 @@ app.post('/getLightState', function (req, res) {
         lightModule.update(req.body.light, object.state, function (error) {
             if (error) {
                 console.log("app.get /getLightState error");
-
             }
         });
     });
     res.redirect('/');
 });
 
+function sendEmail(from, to, subject, text, html) {
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+        from: from, // sender address
+        to: to, // list of receivers
+        subject: subject, // Subject line
+        text: text, // plaintext body
+        html: html // html body
+    };
 
-app.post('/getDoorState', function (req, res) {
-
-    doorModule.getOne(req.body.door, function (error, object) {
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.log("app.get /getDoorState error");
+            return console.log(error);
         }
-        console.log(object.state);
-        var state;
-        if (object.state === "unlocked") {
-            state = "locked";
-        } else if (object.state === "locked") {
-            state = "unlocked";
-        }
-        addLog(req.user.firstname, req.user.lastname, state, getDate() , getTime());
-        doorModule.update(req.body.door, object.state, function (error) {
-            if (error) {
-                console.log("app.get /getDoorState error");
-
-            }
-        });
+        console.log('Message sent: ' + info.response);
     });
+}
 
+app.post('/updateDoorState', function (req, res) {
+    doorModule.getOne(req.body.door, function (error, door) {
+        if (error) {
+            console.log("error");
+        } else {
+            if (door.armed === true) {
+                db.userinfo.find({}, function (error, users) {
+                    console.log(users[0].email);
+                    var receivers = [];
+                    for (var i = 0, length = users.length; i < length; i++) {
+                        if (users[i].emailNotifications === true) {
+                            receivers.push(users[i].email);
+                        }
+                    }
+                    console.log(receivers);
+                    sendEmail('Jason Holdsworth <shaquille_powiesnik@hotmail.com>', // sender address
+                        receivers, // list of receivers
+                        'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
+                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door, // plaintext body
+                        '<a href="views/doors.ejs">Hello world </a>'); // html body
+                });
+            } else {
+                console.log(door.state);
+                var state;
+                if (door.state === "unlocked") {
+                    state = "locked";
+                } else if (door.state === "locked") {
+                    state = "unlocked";
+                }
+                addLog(req.user.firstname, req.user.lastname, state, req.body.door, getDate(), getTime());
+                doorModule.update(req.body.door, state, door.armed, function (error) {
+                    if (error) {
+                        console.log("app.get /getDoorState error");
+                    }
+                });
+            }
+        }
+    });
     res.redirect(req.headers['referer']);
 });
 
+app.post('/armDoor', function (req, res) {
+    var door;
+    if (req.body.armButton === "armFrontDoor") {
+        door = "frontDoor";
+    } else {
+        door = "backDoor";
+    }
+    doorModule.getOne(door, function (error, object) {
+
+        app.post('/getDoorState', function (req, res) {
+            doorModule.getOne(req.body.door, function (error, object) {
+
+                if (error) {
+                    console.log("app.get /getDoorState error");
+                }
+                console.log(object.state);
+                var state;
+                if (object.armed === true) {
+                    state = false;
+                } else {
+                    state = true;
+                }
+                doorModule.update(door, object.state, state, function (error) {
+                    if (error) {
+                        console.log("app.get /getDoorState error");
+                    }
+                });
+            });
+            res.redirect(req.headers['referer']);
+        });
+    });
+});
 //provides login page
 app.get('/login', function (req, res) {
     res.render('login');
@@ -318,7 +416,7 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-///////////////////////////////////////////////DOORS////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////Door Page///////////////////////////////////////////////////////////////////
 app.get('/doors', verifyAuthenticated, function (req, res) {
     db.accessLog.find({}).sort({date: 1, time: -1}).exec(function (err, docs) {
         doorModule.get(function (error, doorObject) {
@@ -328,33 +426,43 @@ app.get('/doors', verifyAuthenticated, function (req, res) {
                 res.render('doors', {
                     user: req.user,
                     db: docs,
-                    backDoor: doorObject[0].state,
-                    frontDoor: doorObject[1].state
+                    backDoor: doorObject[0],
+                    frontDoor: doorObject[1]
                 });
             }
         });
     });
 });
 
+///////////////////////////////////////////Access Log Page//////////////////////////////////////////////////////////////
 app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
     db.accessLog.find({}).sort({date: 1, time: -1}).exec(function (err, docs) {
         res.render('accessLogPage', {
             user: req.user,
-            db: docs,
+            db: docs
         });
     });
 });
 
+//Database Clearance
 app.post('/emptyLog', verifyAuthenticated, function (req, res) {
-        console.log('cleared Log')
-        db.accessLog.remove({}, { multi: true });
-        res.redirect("accessLogPage");
+    console.log('cleared Log');
+    db.accessLog.remove({}, {multi: true});
+    res.redirect("accessLogPage");
 });
 
-///////////////////////////////////////////////lights///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////lights Page//////////////////////////////////////////////////////////////////
 app.get('/lights', verifyAuthenticated, function (req, res) {
     res.render('lights', {
-        user: req.user
+        user: req.user,
+        light1: light1,
+        light2: light2,
+        light3: light3,
+        light4: light4,
+        light5: light5,
+        light6: light6,
+        currentTotal: currentTotal,
+        total: total
     });
 });
 
@@ -428,7 +536,6 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     } else {
         adminPrivileges = false;
     }
-
     editUser(
         req.body.profileSelect,
         bedroomLight,
@@ -566,61 +673,14 @@ app.post('/createProfile', verifyAuthenticated, function (req, res) {
     });
 });
 
+
 var port = process.env.PORT || 3000;
 
 server.listen(port, function () {
     console.log('http://127.0.0.1:' + port + '/');
     console.log('ready..');
+
 });
 
-
-/* Some sql configuration and examples in case we use sql
- var connection = mysql.createConnection(
- {
- host : 'localhost',
- user : 'Jason',
- password : 'automation',
- database : 'homeautomation'
- }
- );
-
- connection.connect();
-
- var queryStr = 'SELECT * FROM tempdata';
-
- connection.query(queryStr, function(error, rows) {
- if (error) throw error;
-
- for (var i in rows) {
- temp = rows[i].temperature;
- console.log('Temperature: ', temp)
- }
- });
-
- var queryStr1 = 'SELECT * FROM usersinfo';
-
- connection.query(queryStr1, function(error, rows) {
- if (error) throw error;
-
- for (var i in rows) {
- var username = rows[i].username;
- var password = rows[i].password;
- console.log('Username: ', username, '\nPassword: ', password)
- }
- });
-
-
- connection.on('close', function(error) {
- if (error) {
- connection = mysql.createConnection(connection.config);
- } else {
- console.log('Connection closed normally. ');
- }
- });
-
- connection.end();
-
-
- */
 
 

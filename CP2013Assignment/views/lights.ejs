@@ -15,47 +15,41 @@
     <form class="lightConsumption" method="post" action="/updatePrivileges">
 
         <label for="bedroomLight">Bedroom</label>
-        <span class="consumptionLabel">KW: 0</span>
-        <input id="bedroomLight" type="checkbox">
+        <span class="consumptionLabel">watts: <%= light1 %> </span>
 
         <br>
 
         <label for="officeLight">Office</label>
-        <span class="consumptionLabel">KW: 0</span>
-        <input id="officeLight" type="checkbox">
+        <span class="consumptionLabel">watts: <%= light2 %></span>
 
         <br>
 
         <label for="kitchenLight">Kitchen</label>
-        <span class="consumptionLabel">KW: 0</span>
-        <input id="kitchenLight" type="checkbox">
+        <span class="consumptionLabel">watts: <%= light3 %></span>
 
         <br>
 
         <label for="livingLight">Living Room</label>
-        <span class="consumptionLabel">KW: 0</span>
-        <input id="livingLight" type="checkbox">
+        <span class="consumptionLabel">watts: <%= light4 %></span>
 
         <br>
 
         <label for="bathroomLight">Bathroom</label>
-        <span class="consumptionLabel">KW: 0</span>
-        <input id="bathroomLight" type="checkbox">
+        <span class="consumptionLabel">watts: <%= light5 %></span>
 
         <br>
 
         <label for="laundryLight">Laundry</label>
-        <span class="consumptionLabel">KW: 0</span>
-        <input id="laundryLight" type="checkbox">
+        <span class="consumptionLabel">watts: <%= light6 %></span>
 
         <br>
         <br>
 
-        <h2>Total Current Usage:</h2>
+        <h2>Total Current Usage: <%= currentTotal %></h2>
 
         <br>
 
-        <h2>Total Usage:</h2>
+        <h2>Total Usage: <%= total %></h2>
 
     </form>
 

@@ -30,24 +30,19 @@ var doorModule = {
             callback(null, state);
         });
     },
-    update: function (door, currentState){
-        //push a off/on based on img
-        var state;
-        if (currentState==="unlocked"){
-            state = "locked";
-        } else if (currentState==="locked"){
-            state = "unlocked";
-        }
+    update: function (door, doorState, armedState){
         console.log("update door: ", door);
         db.doors.update(
             { door: door},
             {
                 door: door,
-                state: state
+                armed: armedState,
+                state: doorState
             }
         );
         console.log("update door called");
     }
+
 
 };
 

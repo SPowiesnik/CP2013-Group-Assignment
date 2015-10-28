@@ -94,17 +94,17 @@
     }
 
     if (<%= user.frontDoor%>) {
-        document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+        document.getElementById('frontDoor').src = "<%= frontDoor.state%>Door.jpg";
     }else {
-        document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
+        document.getElementById('frontDoor').src = "<%= frontDoor.state%>Door.jpg";
         document.getElementById('frontDoor').disabled = true;
         document.getElementById('frontDoor').style.opacity = 0.4;
 
     }
     if (<%= user.backDoor%>) {
-        document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+        document.getElementById('backDoor').src = "<%= backDoor.state%>Door.jpg";
     }else {
-        document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
+        document.getElementById('backDoor').src = "<%= backDoor.state%>Door.jpg";
         document.getElementById('backDoor').disabled = true;
         document.getElementById('backDoor').style.opacity = 0.4;
     }

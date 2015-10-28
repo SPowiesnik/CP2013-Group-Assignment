@@ -5,11 +5,7 @@
     padding: 0;
     margin: 0;
     font-family: 'Lato', sans-serif;
-
 }
-
-
-
 
 nav {
     z-index: 10;
@@ -103,7 +99,16 @@ nav ul ul ul {
     overflow: scroll;
 }
 
-.doorPage-Doors-Container {
+.door-Form-Container {
+    min-width: 750px;
+    width: 50%;
+    height: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.armDoor-Form{
     min-width: 750px;
     width: 50%;
     height: 650px;
@@ -111,8 +116,27 @@ nav ul ul ul {
     margin-right: auto;
 }
 
-.doorPage-Form {
-    text-align: center;
+.armDoor-Form button {
+    align-self: center;
+    background: repeating-linear-gradient(45deg, transparent, transparent 15px, gray 15px, gray 30px);
+    width: 150px;
+    height: 75px;
+    border-radius: 15px;
+    color: black;
+    border: solid black;
+    font-weight: 800;
+    font-size: x-large;
+}
+
+.leftButton {
+    float: left;
+    margin-left: 80px;
+}
+
+.rightButton {
+    float: right;
+    margin-right: 80px;
+
 }
 
 .frontDoor {
@@ -124,9 +148,7 @@ nav ul ul ul {
 }
 
 .housePlan {
-
     width: 100%;
-
 }
 
 .housePlan-Container {

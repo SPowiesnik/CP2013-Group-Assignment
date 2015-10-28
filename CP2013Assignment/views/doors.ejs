@@ -4,13 +4,7 @@
     <meta charset="UTF-8">
     <title>Doors</title>
     <link rel="stylesheet" type="text/css" href="/main.css"/>
-
-    <script>
-        var dbcomplete = <%- JSON.stringify(db)%>;
-    </script>
-
 </head>
-
 <body>
 
 <% include navbar.ejs %>
@@ -18,8 +12,8 @@
 <div id="content">
     <h1>Doors</h1>
 
-    <div class="doorPage-Doors-Container">
-        <form class="doorPage-Form" method="post" action="/getDoorState">
+    <div class="door-Form-Container">
+        <form method="post" action="/updateDoorState">
             <div class="frontDoor">
                 <input id="frontDoor" name="door" value="frontDoor" type="image">
 
@@ -30,26 +24,53 @@
                 <input id="backDoor" name="door" value="backDoor" type="image">
 
                 <h1>Back Door</h1>
+
             </div>
         </form>
-        <script type="text/javascript">
-            if (<%= user.frontDoor%>) {
-                document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
-            } else{
-                document.getElementById('frontDoor').src = "<%= frontDoor%>Door.jpg";
-                document.getElementById('frontDoor').disabled = true;
-                document.getElementById('frontDoor').style.opacity = 0.4;
-            }
-            if (<%= user.backDoor%>) {
-                document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
-            } else {
-                document.getElementById('backDoor').src = "<%= backDoor%>Door.jpg";
-                document.getElementById('backDoor').disabled = true;
-                document.getElementById('backDoor').style.opacity = 0.4;
-            }
-        </script>
     </div>
-</div>
+    <div id="armFormDiv" class="armDoor-Form">
+        <form id="armForm" method="post" action="/armDoor">
+            <button class="leftButton" id="armFrontDoor" name="armButton" value="armFrontDoor" type="submit"></button>
+            <button class="rightButton" id="armBackDoor" name="armButton" value="armBackDoor" type="submit"></button>
+        </form>
+    </div>
 
+
+</div>
+<script type="text/javascript">
+    if (<%= backDoor.armed%>) {
+        document.getElementById('armBackDoor').style.backgroundColor = "red";
+        document.getElementById('armBackDoor').textContent = "Armed";
+    } else {
+        document.getElementById('armBackDoor').style.backgroundColor = "yellow";
+        document.getElementById('armBackDoor').textContent = "Arm";
+    }
+    if (<%= frontDoor.armed%>) {
+        document.getElementById('armFrontDoor').style.backgroundColor = "red";
+        document.getElementById('armFrontDoor').textContent = "Armed";
+    } else {
+        document.getElementById('armFrontDoor').style.backgroundColor = "yellow";
+        document.getElementById('armFrontDoor').textContent = "Arm";
+    }
+
+    if (<%= user.frontDoor%>) {
+        document.getElementById('frontDoor').src = "<%= frontDoor.state%>Door.jpg";
+    } else {
+        document.getElementById('frontDoor').src = "<%= frontDoor.state%>Door.jpg";
+        document.getElementById('frontDoor').disabled = true;
+        document.getElementById('frontDoor').style.opacity = 0.4;
+    }
+    if (<%= user.backDoor%>) {
+        document.getElementById('backDoor').src = "<%= backDoor.state%>Door.jpg";
+    } else {
+        document.getElementById('backDoor').src = "<%= backDoor.state%>Door.jpg";
+        document.getElementById('backDoor').disabled = true;
+        document.getElementById('backDoor').style.opacity = 0.4;
+    }
+    if (!<%= user.adminPrivileges%>) {
+        document.getElementById('armFormDiv').remove();
+    }
+
+</script>
 </body>
 </html>

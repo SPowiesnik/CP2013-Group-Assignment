@@ -12,6 +12,7 @@
     "mongodb" : "*",
     "mysql" : "*",
     "nedb" : "*",
+    "nodemailer" : "*",
     "passport" : "*",
     "passport-http" : "*",
     "passport-local" : "*",
