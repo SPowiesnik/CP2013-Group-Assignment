@@ -6,11 +6,10 @@
   "dependencies" : {
     "body-parser" : "*",
     "cookie-parser" : "*",
+    "dialog" : "*",
     "ejs" : "*",
     "express" : "*",
     "express-session" : "*",
-    "mongodb" : "*",
-    "mysql" : "*",
     "nedb" : "*",
     "nodemailer" : "*",
     "passport" : "*",

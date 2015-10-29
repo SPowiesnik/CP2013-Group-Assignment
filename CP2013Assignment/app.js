@@ -14,18 +14,16 @@ var passportLocal = require('passport-local');
 var http = require('http');
 var path = require('path');
 var favicon = require('serve-favicon');
+var dialog = require('dialog');
+
 
 var nodemailer = require('nodemailer');
 
-var Datastore = require('nedb');
+var lightModule = require('./modules/lightDAO');
+var doorModule = require('./modules/doorDAO');
+var userModule = require('./modules/userDAO');
+var accessLogModule = require('./modules/accessLogModule');
 
-var lightModule = require('./data/lightModule');
-var doorModule = require('./data/doorModule');
-
-var db = {
-    userinfo: new Datastore({filename: path.join(__dirname, 'data/userinfo.db'), autoload: true})
-    , accessLog: new Datastore({filename: path.join(__dirname, 'data/accessLog.db'), autoload: true})
-};
 
 var app = express();
 
@@ -63,30 +61,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //verify username and password
-passport.use(new passportLocal.Strategy(function (username, password, done) {
+passport.use(new passportLocal.Strategy(function (username, password, callback) {
     //searches for username in database
-    db.userinfo.findOne({'username': username}, function (error, user) {
-        if (error) {
-            return done(err);
-        }
-
-        if (!user) {
-            return done(null, false);
-        }
-
-        if (user.password != password) {
-            return done(null, false);
-        }
-        return done(null, user);
-    });
+    userModule.verifyLogin(username, password, callback);
 }));
 
-passport.serializeUser(function (user, done) {
-    done(null, user);
+passport.serializeUser(function (user, callback) {
+    callback(null, user);
 });
 
-passport.deserializeUser(function (user, done) {
-    done(null, user);
+passport.deserializeUser(function (user, callback) {
+    callback(null, user);
 });
 
 function verifyAuthenticated(req, res, next) {
@@ -100,68 +85,22 @@ function verifyAuthenticated(req, res, next) {
     }
 }
 
-function getLightState(light, callback) {
-    db.lights.findOne({light: light}, function (error, state) {
-        if (error || !state) {
-            return callback(new Error('light state not found'));
+function sendEmail(from, to, subject, text) {
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+        from: from, // sender address
+        to: to, // list of receivers
+        subject: subject, // Subject line
+        text: text // plaintext body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return console.log(error);
         }
-        console.log(state.state);
-        console.log(light);
-        callback(null, state);
+        console.log('Message sent: ' + info.response);
     });
-}
-
-function insertUser(firstname, lastname, email, username, password, bedroomLight, officeLight, kitchenLight, livingroomLight,
-                    bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
-    db.userinfo.insert({
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        username: username,
-        password: password,
-        bedroomLight: bedroomLight,
-        officeLight: officeLight,
-        kitchenLight: kitchenLight,
-        livingroomLight: livingroomLight,
-        bathroomLight: bathroomLight,
-        laundryLight: laundryLight,
-        frontDoor: frontDoor,
-        backDoor: backDoor,
-        temperature: temperature,
-        humidity: humidity,
-        emailNotifications: emailNotifications,
-        adminPrivileges: adminPrivileges
-    }, function (error, insertDocument) {
-        console.log('inserted user');
-    });
-}
-
-
-function removeUser(username) {
-    db.userinfo.remove({username: username});
-}
-
-function editUser(username, bedroomLight, officeLight, kitchenLight, livingroomLight,
-                  bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
-
-    db.userinfo.update({'username': username}, {
-            $set: {
-                bedroomLight: bedroomLight,
-                officeLight: officeLight,
-                kitchenLight: kitchenLight,
-                livingroomLight: livingroomLight,
-                bathroomLight: bathroomLight,
-                laundryLight: laundryLight,
-                frontDoor: frontDoor,
-                backDoor: backDoor,
-                temperature: temperature,
-                humidity: humidity,
-                emailNotifications: emailNotifications,
-                adminPrivileges: adminPrivileges
-            }
-        }
-    );
-
 }
 
 
@@ -189,26 +128,11 @@ function getDate() {
     return (D + '/' + M + '/' + Y)
 }
 
-//Access Log Insert
-function addLog(firstname, lastname, action, door, date, time) {
-    var log = {
-        name: firstname,
-        lastname: lastname,
-        action: action,
-        door: door,
-        date: date,
-        time: time
-    };
-    db.accessLog.insert(log, function (error, insertDocument) {
-        console.log('Inserted Log');
-    });
-}
 
 //Temperature Dummy Data
 var temp = 25;
 function temperature(min, max) {
     temp += Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log('Temperature :' + temp);
 }
 
 setInterval(function () {
@@ -219,7 +143,6 @@ setInterval(function () {
 var humid = 65;
 function humidity(min, max) {
     humid += Math.floor(Math.random() * (max - min + 1)) + min;
-    console.log('humidity: ' + humid);
 }
 
 setInterval(function () {
@@ -256,7 +179,7 @@ setInterval(function () {
     lightPower(10, 15);
 }, 600);
 
-////////////////////////////////////////////Page Data Start/////////////////////////////////////////////////////////////
+////////////////////////////////////////////Home Page///////////////////////////////////////////////////////////////////
 
 app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
@@ -268,7 +191,6 @@ app.get('/', function (req, res) {
             } else {
 
                 doorModule.get(function (error, doorObject) {
-                    console.log(doorObject[0]);
                     if (error) {
                         console.log("app.get /getDoorState error");
                     } else {
@@ -292,37 +214,43 @@ app.get('/', function (req, res) {
     }
 });
 
-app.post('/getLightState', function (req, res) {
-    lightModule.getOne(req.body.light, function (error, object) {
-        if (error) {
-            console.log("app.get /getLightState error");
-        }
-        lightModule.update(req.body.light, object.state, function (error) {
-            if (error) {
-                console.log("app.get /getLightState error");
-            }
-        });
-    });
+////////////////////////////////////////////Login Page//////////////////////////////////////////////////////////////////
+
+//provides login page
+app.get('/login', function (req, res) {
+    res.render('login');
+});
+
+//authenticate username and password
+app.post('/login', passport.authenticate('local'), function (req, res) {
     res.redirect('/');
 });
 
-function sendEmail(from, to, subject, text) {
-    // setup e-mail data with unicode symbols
-    var mailOptions = {
-        from: from, // sender address
-        to: to, // list of receivers
-        subject: subject, // Subject line
-        text: text // plaintext body
-    };
+//logout feature
+app.get('/logout', function (req, res) {
+    //request the server to log out
+    req.logout();
+    //redirect back to index/home
+    res.redirect('/');
+});
 
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: ' + info.response);
+////////////////////////////////////////////Door Page///////////////////////////////////////////////////////////////////
+app.get('/doors', verifyAuthenticated, function (req, res) {
+    accessLogModule.get(function (error, docs) {
+        doorModule.get(function (error, doorObject) {
+            if (error) {
+                console.log("app.get /getDoorState error");
+            } else {
+                res.render('doors', {
+                    user: req.user,
+                    db: docs,
+                    backDoor: doorObject[0],
+                    frontDoor: doorObject[1]
+                });
+            }
+        });
     });
-}
+});
 
 app.post('/updateDoorState', function (req, res) {
     doorModule.getOne(req.body.door, function (error, door) {
@@ -330,7 +258,7 @@ app.post('/updateDoorState', function (req, res) {
             console.log("error");
         } else {
             if (door.armed === true) {
-                db.userinfo.find({}, function (error, users) {
+                userModule.get(function (error, users) {
                     console.log(users[0].email);
                     var receivers = [];
                     for (var i = 0, length = users.length; i < length; i++) {
@@ -352,7 +280,7 @@ app.post('/updateDoorState', function (req, res) {
                 } else if (door.state === "locked") {
                     state = "unlocked";
                 }
-                addLog(req.user.firstname, req.user.lastname, state, req.body.door, getDate(), getTime());
+                accessLogModule.addLog(req.user.firstname, req.user.lastname, state, req.body.door, getDate(), getTime());
                 doorModule.update(req.body.door, state, door.armed, function (error) {
                     if (error) {
                         console.log("app.get /getDoorState error");
@@ -372,69 +300,29 @@ app.post('/armDoor', function (req, res) {
         door = "backDoor";
     }
     doorModule.getOne(door, function (error, object) {
-
-        app.post('/getDoorState', function (req, res) {
-            doorModule.getOne(req.body.door, function (error, object) {
-
-                if (error) {
-                    console.log("app.get /getDoorState error");
-                }
-                console.log(object.state);
-                var state;
-                if (object.armed === true) {
-                    state = false;
-                } else {
-                    state = true;
-                }
-                doorModule.update(door, object.state, state, function (error) {
-                    if (error) {
-                        console.log("app.get /getDoorState error");
-                    }
-                });
-            });
-            res.redirect(req.headers['referer']);
-        });
-    });
-});
-//provides login page
-app.get('/login', function (req, res) {
-    res.render('login');
-});
-
-//authenticate username and password
-app.post('/login', passport.authenticate('local'), function (req, res) {
-    res.redirect('/');
-});
-
-//logout feature
-app.get('/logout', function (req, res) {
-    //request the server to log out
-    req.logout();
-    //redirect back to index/home
-    res.redirect('/');
-});
-
-////////////////////////////////////////////Door Page///////////////////////////////////////////////////////////////////
-app.get('/doors', verifyAuthenticated, function (req, res) {
-    db.accessLog.find({}).sort({date: 1, time: -1}).exec(function (err, docs) {
-        doorModule.get(function (error, doorObject) {
+        if (error) {
+            console.log("app.get /armDoor error");
+        }
+        console.log(object.state);
+        var state;
+        if (object.armed === true) {
+            state = false;
+        } else {
+            state = true;
+        }
+        doorModule.update(door, object.state, state, function (error) {
             if (error) {
-                console.log("app.get /getDoorState error");
-            } else {
-                res.render('doors', {
-                    user: req.user,
-                    db: docs,
-                    backDoor: doorObject[0],
-                    frontDoor: doorObject[1]
-                });
+                console.log("app.get /armDoor error");
             }
         });
+        res.redirect(req.headers['referer']);
+
     });
 });
 
-///////////////////////////////////////////Access Log Page//////////////////////////////////////////////////////////////
+///////////////////////////////////////////Access Log///////////////////////////////////////////////////////////////////
 app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
-    db.accessLog.find({}).sort({date: 1, time: -1}).exec(function (err, docs) {
+    accessLogModule.get(function (err, docs) {
         res.render('accessLogPage', {
             user: req.user,
             db: docs
@@ -445,11 +333,11 @@ app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
 //Database Clearance
 app.post('/emptyLog', verifyAuthenticated, function (req, res) {
     console.log('cleared Log');
-    db.accessLog.remove({}, {multi: true});
+    accessLogModule.clearLogs();
     res.redirect("accessLogPage");
 });
 
-///////////////////////////////////////////lights Page//////////////////////////////////////////////////////////////////
+///////////////////////////////////////////Lights///////////////////////////////////////////////////////////////////////
 app.get('/lights', verifyAuthenticated, function (req, res) {
     res.render('lights', {
         user: req.user,
@@ -464,8 +352,24 @@ app.get('/lights', verifyAuthenticated, function (req, res) {
     });
 });
 
+app.post('/updateLightState', function (req, res) {
+    lightModule.getOne(req.body.light, function (error, object) {
+        if (error) {
+            console.log("app.get /getLightState error");
+        }
+        lightModule.update(req.body.light, object.state, function (error) {
+            if (error) {
+                console.log("app.get /getLightState error");
+            }
+        });
+    });
+    res.redirect('/');
+});
+
+///////////////////////////////////////////Profiles/////////////////////////////////////////////////////////////////////
+
 app.get('/editProfile', verifyAuthenticated, function (req, res) {
-    db.userinfo.find({}, function (err, docs) {
+    userModule.get( function (err, docs) {
         res.render('editProfile', {
             user: req.user,
             db: docs
@@ -499,7 +403,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     } else {
         bathroomLight = false;
     }
-    if (req.body.lastname === "on") {
+    if (req.body.laundryLight === "on") {
         var laundryLight = true;
     } else {
         laundryLight = false;
@@ -534,7 +438,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     } else {
         adminPrivileges = false;
     }
-    editUser(
+    userModule.editUser(
         req.body.profileSelect,
         bedroomLight,
         officeLight,
@@ -553,7 +457,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
 });
 
 app.get('/removeProfile', verifyAuthenticated, function (req, res) {
-    db.userinfo.find({}, function (err, docs) {
+    userModule.get( function (err, docs) {
         res.render('removeProfile', {
             user: req.user,
             db: docs
@@ -563,7 +467,7 @@ app.get('/removeProfile', verifyAuthenticated, function (req, res) {
 
 
 app.post('/removeProfile', verifyAuthenticated, function (req, res) {
-    removeUser(
+    userModule.removeUser(
         req.body.profileSelect
     );
     res.redirect("removeProfile");
@@ -638,13 +542,13 @@ app.post('/createProfile', verifyAuthenticated, function (req, res) {
     } else {
         adminPrivileges = false;
     }
-    db.userinfo.findOne({username: req.body.username}, function (error, user) {
+    userModule.getOne(req.body.username, function (error, user) {
         if (!user) {
             if (req.body.password !== req.body.confirmPassword || !req.body.firstName.trim() || !req.body.lastName.trim()
                 || !req.body.username.trim() || !req.body.password.trim()) {
                 res.send("please fill in all required fields");
             } else {
-                insertUser(
+                userModule.insertUser(
                     req.body.firstName,
                     req.body.lastName,
                     req.body.email,
@@ -666,7 +570,8 @@ app.post('/createProfile', verifyAuthenticated, function (req, res) {
                 res.redirect("newProfile");
             }
         } else {
-            res.send("username is already taken");
+            dialog.info("Username is already taken", "Attention");
+            res.redirect(req.headers['referer']);
         }
     });
 });

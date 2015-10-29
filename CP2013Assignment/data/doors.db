@@ -1,2 +1,2 @@
-{"door":"backDoor","armed":true,"state":"unlocked","_id":"FuMCE4JSxek9WJZY"}
-{"door":"frontDoor","armed":true,"state":"unlocked","_id":"NiO1ReY17D0eo8uT"}
+{"door":"backDoor","armed":false,"state":"locked","_id":"FuMCE4JSxek9WJZY"}
+{"door":"frontDoor","armed":false,"state":"locked","_id":"NiO1ReY17D0eo8uT"}
