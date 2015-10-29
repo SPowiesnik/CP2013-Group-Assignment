@@ -320,6 +320,19 @@ app.post('/armDoor', function (req, res) {
     });
 });
 
+
+
+
+app.get('/openFrontDoor', function (req, res) {
+    doorModule.update('frontDoor','unlocked',false);
+    res.redirect('/');
+});
+
+app.get('/openBackDoor', function (req, res) {
+    doorModule.update('backDoor','unlocked',false);
+    res.redirect('/');
+});
+
 ///////////////////////////////////////////Access Log///////////////////////////////////////////////////////////////////
 app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
     accessLogModule.get(function (err, docs) {
