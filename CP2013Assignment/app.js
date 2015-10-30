@@ -342,7 +342,7 @@ app.get('/openFrontDoor', verifyAuthenticated, function (req, res) {
                     sendEmail('Jason Holdsworth', // sender address
                         receivers, // list of receivers
                         'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
-                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door); // plaintext body
+                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the front door'); // plaintext body
                 });
             } else {
                 var state;
@@ -376,7 +376,7 @@ app.get('/openBackDoor', verifyAuthenticated, function (req, res) {
                     sendEmail('Jason Holdsworth', // sender address
                         receivers, // list of receivers
                         'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
-                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door); // plaintext body
+                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the back door'); // plaintext body
                 });
             } else {
                 var state;
