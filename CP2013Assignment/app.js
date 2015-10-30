@@ -80,8 +80,8 @@ function verifyAuthenticated(req, res, next) {
         //allows the request
         next();
     } else {
-        //sends forbidden 403 page
-        res.sendStatus(403);
+        //redirects to login page
+        res.redirect('login');
     }
 }
 
@@ -267,7 +267,7 @@ app.post('/updateDoorState', function (req, res) {
                         }
                     }
                     console.log(receivers);
-                    sendEmail('Jason Holdsworth <shaquille_powiesnik@hotmail.com>', // sender address
+                    sendEmail('Jason Holdsworth', // sender address
                         receivers, // list of receivers
                         'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
                         req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door); // plaintext body
@@ -323,14 +323,75 @@ app.post('/armDoor', function (req, res) {
 
 
 
-app.get('/openFrontDoor', function (req, res) {
-    doorModule.update('frontDoor','unlocked',false);
-    res.redirect('/');
+app.get('/openFrontDoor', verifyAuthenticated, function (req, res) {
+        doorDAO.getOne("frontDoor", function (error, door) {
+
+            if (error) {
+                console.log("app.get /openFrontDoor error");
+            }
+            if (door.armed === true) {
+                userDAO.get(function (error, users) {
+                    console.log(users[0].email);
+                    var receivers = [];
+                    for (var i = 0, length = users.length; i < length; i++) {
+                        if (users[i].emailNotifications === true) {
+                            receivers.push(users[i].email);
+                        }
+                    }
+                    console.log(receivers);
+                    sendEmail('Jason Holdsworth', // sender address
+                        receivers, // list of receivers
+                        'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
+                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door); // plaintext body
+                });
+            } else {
+                var state;
+                if (door.state === "unlocked" && door.armed === false) {
+                    state = "locked";
+                    doorDAO.update('frontDoor', 'locked', false);
+                } else if (door.state === "locked" && door.armed === false) {
+                    state = "unlocked";
+                    doorDAO.update('frontDoor', 'unlocked', false);
+                }
+            }
+        });
+        res.redirect('/');
 });
 
-app.get('/openBackDoor', function (req, res) {
-    doorModule.update('backDoor','unlocked',false);
-    res.redirect('/');
+app.get('/openBackDoor', verifyAuthenticated, function (req, res) {
+        doorDAO.getOne("backDoor", function (error, door) {
+            if (error) {
+                console.log("app.get /openBackDoor error");
+            }
+            if (door.armed === true) {
+                userDAO.get(function (error, users) {
+                    console.log(users[0].email);
+                    var receivers = [];
+                    for (var i = 0, length = users.length; i < length; i++) {
+                        if (users[i].emailNotifications === true) {
+                            receivers.push(users[i].email);
+                        }
+                    }
+                    console.log(receivers);
+                    sendEmail('Jason Holdsworth', // sender address
+                        receivers, // list of receivers
+                        'ARMED DOOR: ATTEMPTED ENTRY', // Subject line
+                        req.user.firstname + ' ' + req.user.lastname + ' attempted to access the ' + req.body.door); // plaintext body
+                });
+            } else {
+                var state;
+                if (door.state === "unlocked" && door.armed === false) {
+                    state = "locked";
+                    doorDAO.update('backDoor', 'locked', false);
+                } else if (door.state === "locked" && door.armed === false) {
+                    state = "unlocked";
+                    doorDAO.update('backDoor', 'unlocked', false);
+                }
+            }
+        });
+
+        res.redirect('/');
+
 });
 
 ///////////////////////////////////////////Access Log///////////////////////////////////////////////////////////////////
