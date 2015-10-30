@@ -108,34 +108,32 @@ nav ul ul ul {
     text-align: center;
 }
 
-.armDoor-Form{
+.armDoor-Form {
     min-width: 750px;
     width: 50%;
-    height: 650px;
+    height: 200px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .armDoor-Form button {
     align-self: center;
-    background: repeating-linear-gradient(45deg, transparent, transparent 15px, gray 15px, gray 30px);
-    width: 150px;
-    height: 75px;
+    background: repeating-linear-gradient(45deg, transparent, transparent 25px, gray 25px, gray 50px);
+    width: 300px;
+    height: 125px;
     border-radius: 15px;
     color: black;
     border: solid black;
     font-weight: 800;
-    font-size: x-large;
+    font-size: 50px;
 }
 
 .leftButton {
     float: left;
-    margin-left: 80px;
 }
 
 .rightButton {
     float: right;
-    margin-right: 80px;
 
 }
 
@@ -224,18 +222,42 @@ nav ul ul ul {
 }
 
 .privileges {
-    position: relative;
-    width: 40%;
+    position: absolute;
+    width: 600px;
+    margin-bottom: 100px;
 }
 
-.privileges input {
-    right: 20px;
+.privileges input[type="checkbox"] {
+    height: 30px;
+    width: 30px;
     position: absolute;
+    right: 5px;
+}
+
+.privileges input[type="text"] {
+    height: 30px;
+    width: 250px;
+    position: absolute;
+    right: 5px;
+}
+
+.privileges input[type="password"] {
+    height: 30px;
+    width: 250px;
+    position: absolute;
+    right: 5px;
 }
 
 .privileges label {
-    left: 40px;
-    position: relative;
+    font-size: 30px;
+}
+
+.privileges h1 {
+}
+
+.privileges div {
+    height: 30px;
+    margin-bottom: 20px;
 }
 
 .lightConsumption label {
@@ -256,14 +278,15 @@ nav ul ul ul {
 .submitButton {
     padding: 5px;
     position: absolute;
-    bottom: -40px;
-    background: linear-gradient(#eeeeee 0%, gray 100%);;
+    bottom: -50px;
+    left: 0;
+    background: linear-gradient(limegreen 0%, forestgreen 100%);;
     color: white;
     font-family: Tahoma, Geneva, sans-serif;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
-    border: 1px solid #999;
+    border: 1px solid forestgreen;
     font-size: 20px;
 
 }
@@ -272,9 +295,8 @@ nav ul ul ul {
     background: gray;
 }
 
-.logIn {
+.logInButton {
     clear: both;
-    margin-top: 20px;
     border: solid forestgreen;
     height: 50px;
     width: 357px;
@@ -284,17 +306,17 @@ nav ul ul ul {
 
     -webkit-transition: -webkit-box-shadow .1s ease-in-out;
 
-    -webkit-box-shadow: 0px 3px 0px limegreen, 0px 3px 6px forestgreen;
-    -moz-box-shadow: 0px 3px 0px limegreen, 0px 3px 6px forestgreen;
-    box-shadow: 0px 3px 0px limegreen, 0px 3px 6px forestgreen;
+    -webkit-box-shadow: 0px 3px 0px silver, 0px 3px 6px forestgreen;
+    -moz-box-shadow: 0px 3px 0px silver, 0px 3px 6px forestgreen;
+    box-shadow: 0px 3px 0px silver, 0px 3px 6px forestgreen;
 
-    background: -moz-linear-gradient(limegreen 0%, forestgreen 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, limegreen), color-stop(100%, forestgreen));
-    background: -webkit-linear-gradient(limegreen 0%, forestgreen);
-    background: linear-gradient(limegreen 0%, forestgreen 100%);
+    background: -moz-linear-gradient(silver 0%, forestgreen 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, silver), color-stop(100%, forestgreen));
+    background: -webkit-linear-gradient(silver 0%, forestgreen);
+    background: ghostwhite;
 }
 
-.logIn input {
+.logInButton input {
     clear: both;
     margin: auto;
     border-color: transparent;
@@ -304,16 +326,16 @@ nav ul ul ul {
 
     text-align: center;
     padding: 10px;
-    color: white;
+    color: forestgreen;
     font-weight: 400;
     font-size: 20px;
 }
 
-.logIn:hover {
+.logInButton:hover {
     color: lightgrey;
 }
 
-.logIn:active {
+.logInButton:active {
     -webkit-box-shadow: 0 0 0 #eeeeee, 0 0 0 black;
     -moz-box-shadow: 0 0 0 #eeeeee, 0 0 0 black;
     box-shadow: 0 0 0 #eeeeee, 0 0 0 black;
@@ -334,10 +356,11 @@ nav ul ul ul {
 .formInput input {
     margin: 5px 0 15px 0;
     width: 357px;
+    height: 40px;
     padding: 5px;
 }
 
-.textBox {
+.login {
     margin: 10% auto;
     width: 400px;
     border: 3px solid forestgreen;
@@ -351,26 +374,37 @@ nav ul ul ul {
     background: linear-gradient(limegreen 0%, forestgreen 100%);
 }
 
-input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-}
-
 select {
     font-size: 20px;
 }
 
 /*Formobile*/
 @media (orientation: portrait) {
-    .textBox {
+    .login {
         width: 90%;
-        height: 100%;
-        font-size: 10px;
+        height: 600px;
     }
 
-    .logIn {
-        height: 20%;
+    .login input {
+        font-size: 40px;
         width: 100%;
+        height: 100px;
+    }
+
+    .login label {
+        width: 20%;
+        font-size: 40px;
+    }
+
+    .logInButton {
+        height: 200px;
+        width: 100%;
+    }
+
+    .logInButton input {
+        height: 200px;
+        width: 100%;
+        font-size: 100px;
     }
 
     nav {
@@ -405,13 +439,10 @@ select {
         height: 80%;
     }
 
-    input[type="checkbox"] {
-        width: 40px;
-        height: 40px;
-    }
-
     select {
-        font-size: 40px;
+        height: 80px;
+        width: 300px;
+        font-size: 50px;
     }
 
     .submitButton {
@@ -431,4 +462,40 @@ select {
         overflow: scroll;
     }
 
+    .submitButton {
+        height: 80px;
+        width: 300px;
+        bottom: -120px;
+        font-size: 40px;
+    }
+
+    .privileges input[type="checkbox"] {
+        height: 80px;
+        width: 80px;
+        position: absolute;
+        right: 5px;
+    }
+
+    .privileges input[type="text"] {
+        height: 80px;
+        width: 450px;
+        position: absolute;
+        right: 50px;
+    }
+
+    .privilegesinput[type="password"] {
+        height: 80px;
+        width: 450px;
+        position: absolute;
+        right: 50px;
+    }
+
+    .privileges div {
+        height: 80px;
+        margin-bottom: 20px;
+    }
+
+    .privileges label {
+        font-size: 50px;
+    }
 }

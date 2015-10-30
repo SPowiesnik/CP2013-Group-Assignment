@@ -40,17 +40,17 @@
 <script type="text/javascript">
     if (<%= backDoor.armed%>) {
         document.getElementById('armBackDoor').style.backgroundColor = "red";
-        document.getElementById('armBackDoor').textContent = "Armed";
+        document.getElementById('armBackDoor').textContent = "ARMED";
     } else {
         document.getElementById('armBackDoor').style.backgroundColor = "yellow";
-        document.getElementById('armBackDoor').textContent = "Arm";
+        document.getElementById('armBackDoor').textContent = "ARM";
     }
     if (<%= frontDoor.armed%>) {
         document.getElementById('armFrontDoor').style.backgroundColor = "red";
-        document.getElementById('armFrontDoor').textContent = "Armed";
+        document.getElementById('armFrontDoor').textContent = "ARMED";
     } else {
         document.getElementById('armFrontDoor').style.backgroundColor = "yellow";
-        document.getElementById('armFrontDoor').textContent = "Arm";
+        document.getElementById('armFrontDoor').textContent = "ARM";
     }
 
     if (<%= user.frontDoor%>) {

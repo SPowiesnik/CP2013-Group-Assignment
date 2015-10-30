@@ -22,10 +22,11 @@
     <form class="privileges" method="post" action="/removeProfile">
 
         <select id="profileSelect" name="profileSelect">
-            <option selected="true" disabled="true" >Select User</option>
+            <option selected="true" disabled="true">Select User</option>
             <script language="javascript" type="text/javascript">
-                for(var i=0;i<dbcomplete.length;i++)
-                {document.write("<option required>"+dbcomplete[i].username+"</option>");}
+                for (var i = 0; i < dbcomplete.length; i++) {
+                    document.write("<option required>" + dbcomplete[i].username + "</option>");
+                }
             </script>
 
         </select>

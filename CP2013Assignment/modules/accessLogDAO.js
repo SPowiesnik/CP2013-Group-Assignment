@@ -11,7 +11,7 @@ var db = {
 var accessLogModule = {
     get: function (callback) {
         db.accessLog.find({}).sort({date: -1, time: -1}).exec(function (error, docs) {
-            if (error){
+            if (error) {
                 return callback(err);
             } else {
                 return callback(null, docs);
@@ -32,7 +32,7 @@ var accessLogModule = {
             console.log('Inserted Log');
         });
     },
-    clearLogs: function(){
+    clearLogs: function () {
         db.accessLog.remove({}, {multi: true});
     }
 

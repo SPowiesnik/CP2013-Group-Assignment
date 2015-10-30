@@ -6,7 +6,7 @@
     <script data-main="/functions" src="/functions.js"></script>
     <link rel="stylesheet" type="text/css" href="/main.css"/>
 </head>
-    <% include navbar.ejs %>
+<% include navbar.ejs %>
 <body>
 
 
@@ -15,6 +15,7 @@
     <br>
 
     <p>Temperature: <%= temperature %></p>
+
     <p>Humidity: <%= humidity %>%</p>
 
     <div class="housePlan-Container">
@@ -47,7 +48,7 @@
 
     if (<%= user.livingroomLight%>) {
         document.getElementById('light1').src = "light<%= light1 %>.png";
-    }else{
+    } else {
         document.getElementById('light1').src = "light<%= light1 %>.png";
         document.getElementById('light1').disabled = true;
         document.getElementById('light1').style.opacity = 0.4;
@@ -55,7 +56,7 @@
 
     if (<%= user.bedroomLight%>) {
         document.getElementById('light2').src = "light<%= light2 %>.png";
-    }else{
+    } else {
         document.getElementById('light2').src = "light<%= light2 %>.png";
         document.getElementById('light2').disabled = true;
         document.getElementById('light2').style.opacity = 0.4;
@@ -63,7 +64,7 @@
 
     if (<%= user.officeLight%>) {
         document.getElementById('light3').src = "light<%= light3 %>.png";
-    }else{
+    } else {
         document.getElementById('light3').src = "light<%= light3 %>.png";
         document.getElementById('light3').disabled = true;
         document.getElementById('light3').style.opacity = 0.4;
@@ -71,7 +72,7 @@
 
     if (<%= user.bathroomLight%>) {
         document.getElementById('light4').src = "light<%= light4 %>.png";
-    }else{
+    } else {
         document.getElementById('light4').src = "light<%= light4 %>.png";
         document.getElementById('light4').disabled = true;
         document.getElementById('light4').style.opacity = 0.4;
@@ -79,7 +80,7 @@
 
     if (<%= user.laundryLight%>) {
         document.getElementById('light5').src = "light<%= light5 %>.png";
-    }else{
+    } else {
         document.getElementById('light5').src = "light<%= light5 %>.png";
         document.getElementById('light5').disabled = true;
         document.getElementById('light5').style.opacity = 0.4;
@@ -87,7 +88,7 @@
 
     if (<%= user.kitchenLight%>) {
         document.getElementById('light6').src = "light<%= light6 %>.png";
-    }else{
+    } else {
         document.getElementById('light6').src = "light<%= light6 %>.png";
         document.getElementById('light6').disabled = true;
         document.getElementById('light6').style.opacity = 0.4;
@@ -95,7 +96,7 @@
 
     if (<%= user.frontDoor%>) {
         document.getElementById('frontDoor').src = "<%= frontDoor.state%>Door.jpg";
-    }else {
+    } else {
         document.getElementById('frontDoor').src = "<%= frontDoor.state%>Door.jpg";
         document.getElementById('frontDoor').disabled = true;
         document.getElementById('frontDoor').style.opacity = 0.4;
@@ -103,7 +104,7 @@
     }
     if (<%= user.backDoor%>) {
         document.getElementById('backDoor').src = "<%= backDoor.state%>Door.jpg";
-    }else {
+    } else {
         document.getElementById('backDoor').src = "<%= backDoor.state%>Door.jpg";
         document.getElementById('backDoor').disabled = true;
         document.getElementById('backDoor').style.opacity = 0.4;

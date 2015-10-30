@@ -19,10 +19,10 @@ var dialog = require('dialog');
 
 var nodemailer = require('nodemailer');
 
-var lightModule = require('./modules/lightDAO');
-var doorModule = require('./modules/doorDAO');
-var userModule = require('./modules/userDAO');
-var accessLogModule = require('./modules/accessLogModule');
+var lightDAO = require('./modules/lightDAO');
+var doorDAO = require('./modules/doorDAO');
+var userDAO = require('./modules/userDAO');
+var accessLogDAO = require('./modules/accessLogDAO');
 
 
 var app = express();
@@ -63,7 +63,7 @@ app.use(passport.session());
 //verify username and password
 passport.use(new passportLocal.Strategy(function (username, password, callback) {
     //searches for username in database
-    userModule.verifyLogin(username, password, callback);
+    userDAO.verifyLogin(username, password, callback);
 }));
 
 passport.serializeUser(function (user, callback) {
@@ -185,12 +185,12 @@ app.get('/', function (req, res) {
     if (!req.isAuthenticated()) {
         res.redirect('login');
     } else {
-        lightModule.get(function (error, lightObject) {
+        lightDAO.get(function (error, lightObject) {
             if (error) {
                 console.log("app.get /getLightState error");
             } else {
 
-                doorModule.get(function (error, doorObject) {
+                doorDAO.get(function (error, doorObject) {
                     if (error) {
                         console.log("app.get /getDoorState error");
                     } else {
@@ -236,8 +236,8 @@ app.get('/logout', function (req, res) {
 
 ////////////////////////////////////////////Door Page///////////////////////////////////////////////////////////////////
 app.get('/doors', verifyAuthenticated, function (req, res) {
-    accessLogModule.get(function (error, docs) {
-        doorModule.get(function (error, doorObject) {
+    accessLogDAO.get(function (error, docs) {
+        doorDAO.get(function (error, doorObject) {
             if (error) {
                 console.log("app.get /getDoorState error");
             } else {
@@ -253,12 +253,12 @@ app.get('/doors', verifyAuthenticated, function (req, res) {
 });
 
 app.post('/updateDoorState', function (req, res) {
-    doorModule.getOne(req.body.door, function (error, door) {
+    doorDAO.getOne(req.body.door, function (error, door) {
         if (error) {
             console.log("error");
         } else {
             if (door.armed === true) {
-                userModule.get(function (error, users) {
+                userDAO.get(function (error, users) {
                     console.log(users[0].email);
                     var receivers = [];
                     for (var i = 0, length = users.length; i < length; i++) {
@@ -280,8 +280,8 @@ app.post('/updateDoorState', function (req, res) {
                 } else if (door.state === "locked") {
                     state = "unlocked";
                 }
-                accessLogModule.addLog(req.user.firstname, req.user.lastname, state, req.body.door, getDate(), getTime());
-                doorModule.update(req.body.door, state, door.armed, function (error) {
+                accessLogDAO.addLog(req.user.firstname, req.user.lastname, state, req.body.door, getDate(), getTime());
+                doorDAO.update(req.body.door, state, door.armed, function (error) {
                     if (error) {
                         console.log("app.get /getDoorState error");
                     }
@@ -299,7 +299,7 @@ app.post('/armDoor', function (req, res) {
     } else {
         door = "backDoor";
     }
-    doorModule.getOne(door, function (error, object) {
+    doorDAO.getOne(door, function (error, object) {
         if (error) {
             console.log("app.get /armDoor error");
         }
@@ -310,7 +310,7 @@ app.post('/armDoor', function (req, res) {
         } else {
             state = true;
         }
-        doorModule.update(door, object.state, state, function (error) {
+        doorDAO.update(door, object.state, state, function (error) {
             if (error) {
                 console.log("app.get /armDoor error");
             }
@@ -322,7 +322,7 @@ app.post('/armDoor', function (req, res) {
 
 ///////////////////////////////////////////Access Log///////////////////////////////////////////////////////////////////
 app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
-    accessLogModule.get(function (err, docs) {
+    accessLogDAO.get(function (err, docs) {
         res.render('accessLogPage', {
             user: req.user,
             db: docs
@@ -333,7 +333,7 @@ app.get('/accessLogPage', verifyAuthenticated, function (req, res) {
 //Database Clearance
 app.post('/emptyLog', verifyAuthenticated, function (req, res) {
     console.log('cleared Log');
-    accessLogModule.clearLogs();
+    accessLogDAO.clearLogs();
     res.redirect("accessLogPage");
 });
 
@@ -353,11 +353,11 @@ app.get('/lights', verifyAuthenticated, function (req, res) {
 });
 
 app.post('/updateLightState', function (req, res) {
-    lightModule.getOne(req.body.light, function (error, object) {
+    lightDAO.getOne(req.body.light, function (error, object) {
         if (error) {
             console.log("app.get /getLightState error");
         }
-        lightModule.update(req.body.light, object.state, function (error) {
+        lightDAO.update(req.body.light, object.state, function (error) {
             if (error) {
                 console.log("app.get /getLightState error");
             }
@@ -369,7 +369,7 @@ app.post('/updateLightState', function (req, res) {
 ///////////////////////////////////////////Profiles/////////////////////////////////////////////////////////////////////
 
 app.get('/editProfile', verifyAuthenticated, function (req, res) {
-    userModule.get( function (err, docs) {
+    userDAO.get(function (err, docs) {
         res.render('editProfile', {
             user: req.user,
             db: docs
@@ -438,7 +438,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
     } else {
         adminPrivileges = false;
     }
-    userModule.editUser(
+    userDAO.editUser(
         req.body.profileSelect,
         bedroomLight,
         officeLight,
@@ -457,7 +457,7 @@ app.post('/updatePrivileges', verifyAuthenticated, function (req, res) {
 });
 
 app.get('/removeProfile', verifyAuthenticated, function (req, res) {
-    userModule.get( function (err, docs) {
+    userDAO.get(function (err, docs) {
         res.render('removeProfile', {
             user: req.user,
             db: docs
@@ -466,8 +466,8 @@ app.get('/removeProfile', verifyAuthenticated, function (req, res) {
 });
 
 
-app.post('/removeProfile', verifyAuthenticated, function (req, res) {
-    userModule.removeUser(
+app.post('/removeProfile', function (req, res) {
+    userDAO.removeUser(
         req.body.profileSelect
     );
     res.redirect("removeProfile");
@@ -481,7 +481,7 @@ app.get('/newProfile', verifyAuthenticated, function (req, res) {
 });
 
 
-app.post('/createProfile', verifyAuthenticated, function (req, res) {
+app.post('/createProfile', function (req, res) {
     if (req.body.bedroomLight === "on") {
         var bedroomLight = true;
     } else {
@@ -542,13 +542,13 @@ app.post('/createProfile', verifyAuthenticated, function (req, res) {
     } else {
         adminPrivileges = false;
     }
-    userModule.getOne(req.body.username, function (error, user) {
+    userDAO.getOne(req.body.username, function (error, user) {
         if (!user) {
             if (req.body.password !== req.body.confirmPassword || !req.body.firstName.trim() || !req.body.lastName.trim()
                 || !req.body.username.trim() || !req.body.password.trim()) {
                 res.send("please fill in all required fields");
             } else {
-                userModule.insertUser(
+                userDAO.insertUser(
                     req.body.firstName,
                     req.body.lastName,
                     req.body.email,

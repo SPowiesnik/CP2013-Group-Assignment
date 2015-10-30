@@ -9,11 +9,11 @@ var db = {
 };
 
 var userModule = {
-    get: function (callback){
-        db.userinfo.find({}, function (error, users){
+    get: function (callback) {
+        db.userinfo.find({}, function (error, users) {
             if (error) {
                 return callback(err);
-            } else{
+            } else {
                 return callback(null, users);
             }
 
@@ -76,7 +76,7 @@ var userModule = {
         db.userinfo.remove({username: username});
     },
     editUser: function (username, bedroomLight, officeLight, kitchenLight, livingroomLight,
-                                bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
+                        bathroomLight, laundryLight, frontDoor, backDoor, temperature, humidity, emailNotifications, adminPrivileges) {
 
         db.userinfo.update({'username': username}, {
                 $set: {

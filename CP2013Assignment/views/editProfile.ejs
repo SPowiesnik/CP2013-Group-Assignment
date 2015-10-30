@@ -11,7 +11,7 @@
         var dbcomplete = <%- JSON.stringify(db)%>;
         function reloadCheck() {
             index = document.getElementById("profileSelect").selectedIndex;
-            if(index != 0) {
+            if (index != 0) {
                 index--;
                 document.getElementById("bedroomLight").checked = dbcomplete[index].bedroomLight;
                 document.getElementById("officeLight").checked = dbcomplete[index].officeLight;
@@ -42,84 +42,87 @@
     <form class="privileges" method="post" action="/updatePrivileges">
 
         <select id="profileSelect" onload="reloadCheck()" onchange="reloadCheck()" name="profileSelect">
-            <option selected="true" disabled="true" >Select User</option>
+            <option selected="true" disabled="true">Select User</option>
 
             <script language="javascript" type="text/javascript">
-                for(var i=0;i<dbcomplete.length;i++)
-                {document.write("<option required>"+dbcomplete[i].username+"</option>");}
+                for (var i = 0; i < dbcomplete.length; i++) {
+                    document.write("<option required>" + dbcomplete[i].username + "</option>");
+                }
             </script>
 
         </select>
 
-        <h3>Lights</h3>
-        <label for="bedroomLight">Bedroom</label>
-        <input id="bedroomLight" name="bedroomLight" type="checkbox">
+        <h2>Lights</h2>
 
-        <br>
+        <div>
+            <label for="bedroomLight">Bedroom</label>
+            <input id="bedroomLight" name="bedroomLight" type="checkbox">
+        </div>
 
-        <label for="officeLight">Office</label>
-        <input id="officeLight" name="officeLight" type="checkbox">
+        <div>
+            <label for="officeLight">Office</label>
+            <input id="officeLight" name="officeLight" type="checkbox">
+        </div>
 
-        <br>
+        <div>
+            <label for="kitchenLight">Kitchen</label>
+            <input id="kitchenLight" name="kitchenLight" type="checkbox">
+        </div>
 
-        <label for="kitchenLight">Kitchen</label>
-        <input id="kitchenLight" name="kitchenLight" type="checkbox">
+        <div>
+            <label for="livingLight">Living Room</label>
+            <input id="livingLight" name="livingLight" type="checkbox">
+        </div>
 
-        <br>
+        <div>
+            <label for="bathroomLight">Bathroom</label>
+            <input id="bathroomLight" name="bathroomLight" type="checkbox">
+        </div>
 
-        <label for="livingLight">Living Room</label>
-        <input id="livingLight" name="livingLight" type="checkbox">
-
-        <br>
-
-        <label for="bathroomLight">Bathroom</label>
-        <input id="bathroomLight" name="bathroomLight" type="checkbox">
-
-        <br>
-
-        <label for="laundryLight">Laundry</label>
-        <input id="laundryLight" name="laundryLight" type="checkbox">
+        <div>
+            <label for="laundryLight">Laundry</label>
+            <input id="laundryLight" name="laundryLight" type="checkbox">
+        </div>
 
 
-        <br>
-        <br>
+        <h2>Doors</h2>
 
-        <h3>Doors</h3>
-        <label for="frontDoor">Front Door</label>
-        <input id="frontDoor" name="frontDoor" type="checkbox">
+        <div>
+            <label for="frontDoor">Front Door</label>
+            <input id="frontDoor" name="frontDoor" type="checkbox">
+        </div>
 
-        <br>
+        <div>
+            <label for="backDoor">Back Door</label>
+            <input id="backDoor" name="backDoor" type="checkbox">
+        </div>
 
-        <label for="backDoor">Back Door</label>
-        <input id="backDoor" name="backDoor" type="checkbox">
 
-        <br>
-        <br>
+        <h2>Miscellaneous</h2>
 
-        <h3>Miscellaneous</h3>
-        <label for="temperature">Temperature</label>
-        <input id="temperature" name="temperature" type="checkbox">
+        <div>
+            <label for="temperature">Temperature</label>
+            <input id="temperature" name="temperature" type="checkbox">
+        </div>
 
-        <br>
+        <div>
+            <label for="humidity">Humidity</label>
+            <input id="humidity" name="humidity" type="checkbox">
+        </div>
 
-        <label for="humidity">Humidity</label>
-        <input id="humidity" name="humidity" type="checkbox">
 
-        <br>
-        <br>
+        <h2>Security</h2>
 
-        <h3>Security</h3>
-        <label for="emailNotifications">Email Notifications</label>
-        <input id="emailNotifications" name="emailNotifications" type="checkbox">
+        <div>
+            <label for="emailNotifications">Email Notifications</label>
+            <input id="emailNotifications" name="emailNotifications" type="checkbox">
+        </div>
 
-        <br>
-        <br>
-
-        <h3>Admin Privileges</h3>
-        <label for="adminPrivileges">All Admin Privileges</label>
-        <input id="adminPrivileges" name="adminPrivileges" type="checkbox">
-        <br>
-
+        <div>
+            <h2>Admin Privileges</h2>
+            <label for="adminPrivileges">All Admin Privileges</label>
+            <input id="adminPrivileges" name="adminPrivileges" type="checkbox">
+        </div>
 
         <input class="submitButton" value="Save Changes" type="submit">
 

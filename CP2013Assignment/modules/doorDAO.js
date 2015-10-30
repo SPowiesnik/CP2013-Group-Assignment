@@ -11,17 +11,17 @@ var db = {
 };
 
 var doorModule = {
-    get: function (callback){
-        db.doors.find({}).sort({door:1}).exec( function (error, doorObject) {
-            if (error || !doorObject){
+    get: function (callback) {
+        db.doors.find({}).sort({door: 1}).exec(function (error, doorObject) {
+            if (error || !doorObject) {
                 return callback(new Error('door state not found'));
             }
             callback(null, doorObject);
         });
     },
-    getOne: function (door, callback){
+    getOne: function (door, callback) {
         db.doors.findOne({door: door}, function (error, state) {
-            if (error || !state){
+            if (error || !state) {
                 return callback(new Error('light state not found'));
             }
             console.log(state.state);
@@ -30,10 +30,10 @@ var doorModule = {
             callback(null, state);
         });
     },
-    update: function (door, doorState, armedState){
+    update: function (door, doorState, armedState) {
         console.log("update door: ", door);
         db.doors.update(
-            { door: door},
+            {door: door},
             {
                 door: door,
                 armed: armedState,
